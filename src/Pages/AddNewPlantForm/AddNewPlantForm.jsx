@@ -27,52 +27,52 @@ const AddNewPlantForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4 py-10">
+    <div className="min-h-screen my-20 flex items-center justify-center bg-base-50 px-4 py-10 text-base-content">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-5xl bg-white shadow-md rounded-lg p-8"
+        className="w-full max-w-5xl bg-base-100 shadow-md rounded-lg p-8"
       >
-        <h2 className="text-center text-green-800 text-2xl md:text-3xl font-semibold uppercase border-b pb-2 mb-10">
+        <h2 className="text-center text-primary text-2xl md:text-3xl font-semibold uppercase border-b pb-2 mb-10">
           Add New Plant
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Image URL */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">Image URL</label>
+            <label className="block mb-1 font-medium">Image URL</label>
             <input
               type="text"
               name="image"
               placeholder="Image URL"
               value={formData.image}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="input input-bordered w-full"
               required
             />
           </div>
 
           {/* Plant Name */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">Plant Name</label>
+            <label className="block mb-1 font-medium">Plant Name</label>
             <input
               type="text"
               name="name"
               placeholder="Plant Name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="input input-bordered w-full"
               required
             />
           </div>
 
           {/* Category */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">Category</label>
+            <label className="block mb-1 font-medium">Category</label>
             <select
               name="category"
               value={formData.category}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="select select-bordered w-full"
               required
             >
               <option value="">Select Category</option>
@@ -85,12 +85,12 @@ const AddNewPlantForm = () => {
 
           {/* Care Level */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">Care Level</label>
+            <label className="block mb-1 font-medium">Care Level</label>
             <select
               name="careLevel"
               value={formData.careLevel}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="select select-bordered w-full"
               required
             >
               <option value="">Select Care Level</option>
@@ -102,92 +102,92 @@ const AddNewPlantForm = () => {
 
           {/* Watering Frequency */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">Watering Frequency</label>
+            <label className="block mb-1 font-medium">Watering Frequency</label>
             <input
               type="text"
               name="wateringFrequency"
               placeholder="e.g., every 3 days"
               value={formData.wateringFrequency}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="input input-bordered w-full"
               required
             />
           </div>
 
           {/* Last Watered Date */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">Last Watered Date</label>
+            <label className="block mb-1 font-medium">Last Watered Date</label>
             <input
               type="date"
               name="lastWateredDate"
               value={formData.lastWateredDate}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="input input-bordered w-full"
               required
             />
           </div>
 
           {/* Next Watering Date */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">Next Watering Date</label>
+            <label className="block mb-1 font-medium">Next Watering Date</label>
             <input
               type="date"
               name="nextWateringDate"
               value={formData.nextWateringDate}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="input input-bordered w-full"
               required
             />
           </div>
 
           {/* Health Status */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">Health Status</label>
+            <label className="block mb-1 font-medium">Health Status</label>
             <input
               type="text"
               name="healthStatus"
               placeholder="e.g., Healthy, Dry, Wilting"
               value={formData.healthStatus}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="input input-bordered w-full"
               required
             />
           </div>
 
           {/* User Name */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">User Name</label>
+            <label className="block mb-1 font-medium">User Name</label>
             <input
               type="text"
               name="userName"
               value={formData.userName}
               disabled
-              className="w-full px-4 py-2 border bg-gray-100 rounded"
+              className="input input-disabled w-full"
             />
           </div>
 
           {/* User Email */}
           <div>
-            <label className="block mb-1 font-medium text-gray-700">User Email</label>
+            <label className="block mb-1 font-medium">User Email</label>
             <input
               type="email"
               name="userEmail"
               value={formData.userEmail}
               disabled
-              className="w-full px-4 py-2 border bg-gray-100 rounded"
+              className="input input-disabled w-full"
             />
           </div>
 
           {/* Description */}
           <div className="md:col-span-2">
-            <label className="block mb-1 font-medium text-gray-700">Description</label>
+            <label className="block mb-1 font-medium">Description</label>
             <textarea
               name="description"
               rows="4"
               placeholder="Write a short description about the plant..."
               value={formData.description}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded resize-none focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="textarea textarea-bordered w-full resize-none"
               required
             ></textarea>
           </div>
@@ -195,7 +195,7 @@ const AddNewPlantForm = () => {
 
         <button
           type="submit"
-          className="mt-8 w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-2 rounded transition"
+          className="mt-8 w-full btn btn-primary"
         >
           Submit
         </button>
