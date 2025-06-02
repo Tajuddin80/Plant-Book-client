@@ -31,7 +31,14 @@ export const router = createBrowserRouter([
       },
       {
         path: "/browsetips",
+        loader:()=> fetch('http://localhost:3000/alltips'),
         Component: PlantTable,
+      },
+       {
+        path: "/plantdetails/:id",
+          loader: ({ params }) =>
+          fetch(`http://localhost:3000/plantdetails/${params.id}`),
+        Component: PlantDetailCard,
       },
       {
         path: "/sharetip",

@@ -1,33 +1,48 @@
-import React from 'react';
+import { useLoaderData } from 'react-router'; 
 
 const PlantDetailCard = () => {
+  const plantArray = useLoaderData();
+  const plant = plantArray[0];
+
+  const {
+    title,
+    planttype,
+    category,
+    difficultylevel,
+    image,
+    availability,
+    wateringFrequency,
+    healthStatus,
+    description,
+    userName,
+    userEmail,
+  } = plant;
+
   return (
-    <div className="flex flex-col md:flex-row items-center bg-white rounded-2xl shadow-md max-w-5xl mx-auto p-6 md:p-10 my-10" style={{ backgroundColor: '#f3fdfa' }}>
+    <div
+      className="flex flex-col lg:flex-row items-center bg-base-100 text-base-content rounded-3xl shadow-xl max-w-6xl mx-auto p-6 sm:p-8 lg:p-12 my-12 transition-all"
+    >
       {/* Image */}
-      <div className="flex-shrink-0 mb-6 md:mb-0 md:mr-10">
+      <div className="flex-shrink-0 mb-6 lg:mb-0 lg:mr-12">
         <img
-          src="https://i.ibb.co/4RxxpM4w/images-1.jpg"
-          alt="Croton Petra"
-          className="w-64 h-64 object-cover rounded-lg"
+          src={image}
+          alt={title}
+          className="w-72 h-72 md:w-80 md:h-80 object-cover rounded-xl border border-base-300"
         />
       </div>
 
       {/* Text Content */}
-      <div className="text-gray-900 text-sm md:text-base space-y-2">
-        <h2 className="text-2xl md:text-3xl font-semibold text-green-900">Croton Petra</h2>
-        <p className="italic text-gray-600">Indoor</p>
-        <p className="text-gray-800 mt-2">
-          Croton Petra adds color like no other — red, yellow, and green leaves brighten up any room.
-          It prefers direct sunlight and moist soil. Though slightly fussy, its stunning foliage is
-          worth the effort for vibrant tropical indoor decor lovers.
-        </p>
-        <p><strong>Care Level:</strong> <span className="text-black">Medium</span></p>
-        <p><strong>Watering Frequency:</strong> <span className="text-black">Every 5 days</span></p>
-        <p><strong>Last Watered:</strong> <span className="text-black">16 May 2025</span></p>
-        <p><strong>Next Watering:</strong> <span className="text-black">21 May 2025</span></p>
-        <p><strong>Health Status:</strong> <span className="text-black">Colorful</span></p>
+      <div className="text-sm sm:text-base lg:text-lg space-y-3">
+        <h2 className="text-3xl sm:text-4xl font-bold text-primary">{title}</h2>
+        <p className="italic text-secondary">{category} • {planttype}</p>
+        <p className="text-base-content mt-2">{description}</p>
+        <p><strong>Care Level:</strong> <span>{difficultylevel}</span></p>
+        <p><strong>Watering Frequency:</strong> <span>{wateringFrequency}</span></p>
+        <p><strong>Health Status:</strong> <span>{healthStatus}</span></p>
+        <p><strong>Availability:</strong> <span>{availability}</span></p>
         <p className="text-sm text-gray-500 mt-4">
-          Added by: <strong className="text-black">Layek Miah</strong> (<a className="underline" href="mailto:layekofficial63@gmail.com">layekofficial63@gmail.com</a>)
+          Added by: <strong>{userName}</strong> (
+          <a className="underline text-info" href={`mailto:${userEmail}`}>{userEmail}</a>)
         </p>
       </div>
     </div>
