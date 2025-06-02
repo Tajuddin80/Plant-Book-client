@@ -1,5 +1,22 @@
 // import React, { useState } from "react";
 
+// https://i.ibb.co/CsN02xmh/img1.jpg
+// https://i.ibb.co/s9whRjNj/img2.jpg
+// https://i.ibb.co/xPyzyks/img3.jpg
+// https://i.ibb.co/xPyzyks/img3.jpg
+// https://i.ibb.co/TMfmNK0J/img5.webp
+// https://i.ibb.co/zHLX8cFt/img6.jpg
+// https://i.ibb.co/1tTHYjFT/img7.jpg
+// https://i.ibb.co/HpR7bY00/img8.jpg
+// https://i.ibb.co/whTF1Yzm/newplant-1.webp
+// https://i.ibb.co/wFGgVq3p/newplant-2.jpg
+// https://i.ibb.co/6R4V2zyc/newplant-3.jpg
+// https://i.ibb.co/cK1v9HV0/newplant-4.jpg
+// https://i.ibb.co/V0DJ7vYX/newplant-5.webp
+// https://i.ibb.co/wFy54HBw/newplant-6.webp
+// https://i.ibb.co/CKvp8jn7/newplant-7.jpg
+// https://i.ibb.co/dsJLk0Lr/newplant-8.jpg
+
 const AddNewPlantForm = () => {
   // const [formData, setFormData] = useState({
   //   image: "",
@@ -17,11 +34,23 @@ const AddNewPlantForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const form = e.target
-    const formData =new FormData(form)
-    const plantData = Object.fromEntries(formData.entries())
+    const form = e.target;
+    const formData = new FormData(form);
+    const plantData = Object.fromEntries(formData.entries());
     console.log("Form submitted:", plantData);
     // Submit logic here
+
+    fetch("http://localhost:3000/addnewtip", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(plantData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
   };
 
   return (
@@ -74,15 +103,15 @@ const AddNewPlantForm = () => {
             </select>
           </div>
 
-          {/* Care Level */}
+          {/* Difficulty Level */}
           <div>
-            <label className="block mb-1 font-medium">Care Level</label>
+            <label className="block mb-1 font-medium">Difficulty Level</label>
             <select
-              name="careLevel"
+              name="difficultylevel"
               className="select select-bordered w-full"
               required
             >
-              <option value="">Select Care Level</option>
+              <option value="">Select Difficulty Level</option>
               <option value="Easy">Easy</option>
               <option value="Medium">Medium</option>
               <option value="High">High</option>
@@ -94,9 +123,24 @@ const AddNewPlantForm = () => {
             <input
               type="text"
               name="image"
+              placeholder="e.g., 'https://i.ibb.co/RG87qpm4/slider-3.png'"
               required
               className="input input-disabled w-full"
             />
+          </div>
+      
+          {/* Availability*/}
+          <div>
+            <label className="block mb-1 font-medium">Availability</label>
+            <select
+              name="availability"
+              className="select select-bordered w-full"
+              required
+            >
+              <option value="">Availability</option>
+              <option value="Public">Public</option>
+              <option value="Hidden">Hidden</option>
+            </select>
           </div>
           {/* Watering Frequency */}
           <div>
@@ -105,28 +149,6 @@ const AddNewPlantForm = () => {
               type="text"
               name="wateringFrequency"
               placeholder="e.g., every 3 days"
-              className="input input-bordered w-full"
-              required
-            />
-          </div>
-
-          {/* Last Watered Date */}
-          <div>
-            <label className="block mb-1 font-medium">Last Watered Date</label>
-            <input
-              type="date"
-              name="lastWateredDate"
-              className="input input-bordered w-full"
-              required
-            />
-          </div>
-
-          {/* Next Watering Date */}
-          <div>
-            <label className="block mb-1 font-medium">Next Watering Date</label>
-            <input
-              type="date"
-              name="nextWateringDate"
               className="input input-bordered w-full"
               required
             />

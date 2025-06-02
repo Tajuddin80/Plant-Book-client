@@ -27,7 +27,7 @@ export const router = createBrowserRouter([
         path: "/gardeners/:id",
         loader: ({ params }) =>
           fetch(`http://localhost:3000/gardeners/${params.id}`),
-        element: <GardenerDetailsCard />,
+        Component: GardenerDetailsCard,
       },
       {
         path: "/browsetips",

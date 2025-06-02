@@ -1,16 +1,17 @@
 import { useLoaderData } from "react-router";
 
 const GardenerDetailsCard = () => {
-  const { gardener } = useLoaderData();
+  const gardeners = useLoaderData();
+  const gardener = gardeners[0]; // ✅ assign gardener first
 
   if (!gardener)
     return <p className="text-center mt-10">Loading gardener data...</p>;
 
+  // ✅ Now it's safe to destructure
   const { name, location, specialty, image, active, description } = gardener;
-  console.log(location);
+
   return (
     <div className="flex flex-col md:flex-row items-center rounded-2xl shadow-md max-w-5xl mx-auto p-6 md:p-10 my-10 bg-base-100">
-      {/* Image */}
       <div className="flex-shrink-0 mb-6 md:mb-0 md:mr-10">
         <img
           src={image}
@@ -19,7 +20,6 @@ const GardenerDetailsCard = () => {
         />
       </div>
 
-      {/* Text Content */}
       <div className="text-base-content text-sm md:text-base space-y-2">
         <h2 className="text-2xl md:text-3xl font-semibold text-primary">
           {name}
