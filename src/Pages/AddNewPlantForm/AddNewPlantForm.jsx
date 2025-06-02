@@ -31,7 +31,7 @@ const AddNewPlantForm = () => {
         className="w-full max-w-5xl bg-base-100 shadow-md rounded-lg p-8"
       >
         <h2 className="text-center text-primary text-2xl md:text-3xl font-semibold uppercase border-b pb-2 mb-10">
-          Add New Plant
+          Add New Tip
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Title */}
