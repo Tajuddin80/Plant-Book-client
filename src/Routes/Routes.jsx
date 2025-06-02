@@ -8,6 +8,8 @@ import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 import ExploreGardeners from "../Pages/ExploreGardeners/ExploreGardeners";
 import PlantDetailCard from "../components/PlantDetailCard/PlantDetailCard";
 import GardenerDetailsCard from "../Pages/ExploreGardeners/GardenerDetailsCard";
+import Signin from "../Pages/Signin/Signin";
+import Signup from "../Pages/Signup/Signup";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +19,14 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: Home,
+      },
+      {
+        path: "/signin",
+        Component: Signin,
+      },
+       {
+        path: "/signup",
+        Component: Signup,
       },
       {
         path: "/exploregardeners",
@@ -31,12 +41,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "/browsetips",
-        loader:()=> fetch('http://localhost:3000/alltips'),
+        loader: () => fetch("http://localhost:3000/alltips"),
         Component: PlantTable,
       },
-       {
+      {
         path: "/plantdetails/:id",
-          loader: ({ params }) =>
+        loader: ({ params }) =>
           fetch(`http://localhost:3000/plantdetails/${params.id}`),
         Component: PlantDetailCard,
       },

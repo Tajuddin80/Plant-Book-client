@@ -34,10 +34,11 @@ const GardenerDetailsCard = () => {
 
       {/* Gardener Info */}
       <div className="text-base-content text-sm md:text-base space-y-2">
-        <h2 className="text-2xl md:text-3xl font-semibold text-primary">
-          {name}
-        </h2>
-        <p className="italic text-secondary">{specialty}</p>
+        <h2 className="text-2xl md:text-3xl font-semibold text-base-content">
+  {name}
+</h2>
+      
+<p className="italic text-base-content/80">{specialty}</p>
         <p className="mt-2">{description}</p>
 
         <p>
