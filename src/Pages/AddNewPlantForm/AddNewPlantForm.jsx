@@ -1,28 +1,26 @@
-import React, { useState } from 'react';
+// import React, { useState } from "react";
 
 const AddNewPlantForm = () => {
-  const [formData, setFormData] = useState({
-    image: '',
-    name: '',
-    category: '',
-    careLevel: '',
-    wateringFrequency: '',
-    lastWateredDate: '',
-    nextWateringDate: '',
-    healthStatus: '',
-    userName: 'md Tajuddin',
-    userEmail: 'cmtajuddinchowdhury@gmail.com',
-    description: '',
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  // const [formData, setFormData] = useState({
+  //   image: "",
+  //   name: "",
+  //   category: "",
+  //   careLevel: "",
+  //   wateringFrequency: "",
+  //   lastWateredDate: "",
+  //   nextWateringDate: "",
+  //   healthStatus: "",
+  //   userName: "md Tajuddin",
+  //   userEmail: "cmtajuddinchowdhury@gmail.com",
+  //   description: "",
+  // });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    const form = e.target
+    const formData =new FormData(form)
+    const plantData = Object.fromEntries(formData.entries())
+    console.log("Form submitted:", plantData);
     // Submit logic here
   };
 
@@ -35,31 +33,26 @@ const AddNewPlantForm = () => {
         <h2 className="text-center text-primary text-2xl md:text-3xl font-semibold uppercase border-b pb-2 mb-10">
           Add New Plant
         </h2>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Image URL */}
+          {/* Title */}
           <div>
-            <label className="block mb-1 font-medium">Image URL</label>
+            <label className="block mb-1 font-medium">Title</label>
             <input
               type="text"
-              name="image"
-              placeholder="Image URL"
-              value={formData.image}
-              onChange={handleChange}
+              name="title"
+              placeholder="e.g., “How I Grow Tomatoes Indoors”"
               className="input input-bordered w-full"
               required
             />
           </div>
 
-          {/* Plant Name */}
+          {/* Plant type */}
           <div>
-            <label className="block mb-1 font-medium">Plant Name</label>
+            <label className="block mb-1 font-medium">Plant Type</label>
             <input
               type="text"
-              name="name"
-              placeholder="Plant Name"
-              value={formData.name}
-              onChange={handleChange}
+              name="planttype"
+              placeholder="Plant Type"
               className="input input-bordered w-full"
               required
             />
@@ -70,8 +63,6 @@ const AddNewPlantForm = () => {
             <label className="block mb-1 font-medium">Category</label>
             <select
               name="category"
-              value={formData.category}
-              onChange={handleChange}
               className="select select-bordered w-full"
               required
             >
@@ -88,8 +79,6 @@ const AddNewPlantForm = () => {
             <label className="block mb-1 font-medium">Care Level</label>
             <select
               name="careLevel"
-              value={formData.careLevel}
-              onChange={handleChange}
               className="select select-bordered w-full"
               required
             >
@@ -99,7 +88,16 @@ const AddNewPlantForm = () => {
               <option value="High">High</option>
             </select>
           </div>
-
+          {/* Image URL */}
+          <div>
+            <label className="block mb-1 font-medium">Image URL</label>
+            <input
+              type="text"
+              name="image"
+              required
+              className="input input-disabled w-full"
+            />
+          </div>
           {/* Watering Frequency */}
           <div>
             <label className="block mb-1 font-medium">Watering Frequency</label>
@@ -107,8 +105,6 @@ const AddNewPlantForm = () => {
               type="text"
               name="wateringFrequency"
               placeholder="e.g., every 3 days"
-              value={formData.wateringFrequency}
-              onChange={handleChange}
               className="input input-bordered w-full"
               required
             />
@@ -120,8 +116,6 @@ const AddNewPlantForm = () => {
             <input
               type="date"
               name="lastWateredDate"
-              value={formData.lastWateredDate}
-              onChange={handleChange}
               className="input input-bordered w-full"
               required
             />
@@ -133,8 +127,6 @@ const AddNewPlantForm = () => {
             <input
               type="date"
               name="nextWateringDate"
-              value={formData.nextWateringDate}
-              onChange={handleChange}
               className="input input-bordered w-full"
               required
             />
@@ -147,8 +139,6 @@ const AddNewPlantForm = () => {
               type="text"
               name="healthStatus"
               placeholder="e.g., Healthy, Dry, Wilting"
-              value={formData.healthStatus}
-              onChange={handleChange}
               className="input input-bordered w-full"
               required
             />
@@ -160,7 +150,7 @@ const AddNewPlantForm = () => {
             <input
               type="text"
               name="userName"
-              value={formData.userName}
+              // value={formData.userName}
               disabled
               className="input input-disabled w-full"
             />
@@ -172,7 +162,7 @@ const AddNewPlantForm = () => {
             <input
               type="email"
               name="userEmail"
-              value={formData.userEmail}
+              // value={formData.userEmail}
               disabled
               className="input input-disabled w-full"
             />
@@ -185,18 +175,13 @@ const AddNewPlantForm = () => {
               name="description"
               rows="4"
               placeholder="Write a short description about the plant..."
-              value={formData.description}
-              onChange={handleChange}
               className="textarea textarea-bordered w-full resize-none"
               required
             ></textarea>
           </div>
         </div>
 
-        <button
-          type="submit"
-          className="mt-8 w-full btn btn-primary"
-        >
+        <button type="submit" className="mt-8 w-full btn btn-primary">
           Submit
         </button>
       </form>
