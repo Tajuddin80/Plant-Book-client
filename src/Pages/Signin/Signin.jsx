@@ -4,20 +4,22 @@ import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
 import Swal from "sweetalert2";
 
 const Signin = () => {
-  const handleEmailSignin = (e) => {
+  const { handleGoogleSignIn, handleEmailSignin } = useContext(AuthContext);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const handleEmailSigninFunc = (e) => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
     const loginDetails = Object.fromEntries(formData.entries());
-    alert(loginDetails.email);
-  };
-  const { handleGoogleSignIn } = useContext(AuthContext);
 
-  const handleGoogleClick = () =>
-    handleGoogleSignIn()
+    handleEmailSignin(loginDetails.email, loginDetails.password)
       .then((result) => {
-        setSuccess("Google sign-in success:");
-        if (result.user) {
+        const user = result.user;
+        console.log(user);
+
+        if (user) {
           Swal.fire({
             position: "middle",
             icon: "success",
@@ -25,16 +27,56 @@ const Signin = () => {
             showConfirmButton: false,
             timer: 1500,
           });
+          setSuccess("Google sign-in success:");
         }
-        console.log("Google sign-in success:", result.user);
+      })
+      .catch((error) => {
+        // const errorCode = error.code;
+        const errorMessage = error.message;
+        if (errorMessage) {
+          Swal.fire({
+            position: "middle",
+            icon: "error",
+            title: "Wrong Email or Password",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+  };
+
+  const handleGoogleClick = () =>
+    handleGoogleSignIn()
+      .then((result) => {
+        const user = result.user;
+
+        if (user) {
+          Swal.fire({
+            position: "middle",
+            icon: "success",
+            title: "Signin Successful",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          setSuccess("Google sign-in success:");
+        }
+        console.log("Google sign-in success:", user);
         // Redirect or show success message
       })
       .catch((error) => {
         console.error("Google sign-in error:", error.message);
-        setError(error.message);
+
+        if (error.message) {
+          Swal.fire({
+            position: "middle",
+            icon: "error",
+            title: "Signin unsuccessful",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          setError(error.message);
+        }
       });
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   return (
     <div className="mx-auto max-w-md p-4 my-20 rounded-md shadow sm:p-8 bg-base-100 text-base-content">
       <h2 className="mb-3 text-3xl font-semibold text-center">
@@ -67,7 +109,7 @@ const Signin = () => {
         <hr className="w-full border-base-content/20" />
       </div>
 
-      <form onSubmit={handleEmailSignin} action="" className="space-y-8">
+      <form onSubmit={handleEmailSigninFunc} action="" className="space-y-8">
         <div className="space-y-4">
           <div className="space-y-2">
             <label htmlFor="email" className="block text-sm">
@@ -105,11 +147,10 @@ const Signin = () => {
             />
             {error ? (
               <p className="text-sm text-red-600 font-medium mt-1">{error}</p>
-            ) : (
-              <p className="text-sm text-green-400 ont-medium mt-1">
-                {success}
-              </p>
-            )}
+            ) :(
+              <p className="text-sm text-green-300 font-medium mt-1">{success}</p>
+            ) }
+          
           </div>
         </div>
 

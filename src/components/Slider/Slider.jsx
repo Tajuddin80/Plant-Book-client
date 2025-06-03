@@ -41,8 +41,8 @@ function Slider() {
         <div className="h-[calc(100vh-60px)] md:h-[520px] md:px-8 lg:px-0">
           <Swiper
             ref={swiperRef}
-            modules={[Pagination, Autoplay]}
-            pagination={{ clickable: true }}
+            modules={[ Autoplay]}
+           
             loop={true}
             autoplay={{ delay: 2500, disableOnInteraction: false }}
             className="mySwiper w-full mx-auto"

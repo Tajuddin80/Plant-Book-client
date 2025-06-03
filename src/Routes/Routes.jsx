@@ -18,13 +18,14 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
+        loader: () => fetch("http://localhost:3000/recenttips"),
         Component: Home,
       },
       {
         path: "/signin",
         Component: Signin,
       },
-       {
+      {
         path: "/signup",
         Component: Signup,
       },
@@ -46,19 +47,17 @@ export const router = createBrowserRouter([
       },
       {
         path: "/plantdetails/:id",
-     
         loader: ({ params }) =>
           fetch(`http://localhost:3000/plantdetails/${params.id}`),
         Component: PlantDetailCard,
       },
       {
         path: "/sharetip",
-        
         Component: AddNewPlantForm,
       },
       {
         path: "/mytips",
-         
+
         Component: PlantDetailCard,
       },
     ],

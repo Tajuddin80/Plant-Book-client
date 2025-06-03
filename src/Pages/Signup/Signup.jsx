@@ -5,7 +5,69 @@ import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
 import Swal from "sweetalert2";
 
 const Signup = () => {
-  const { handleGoogleSignIn } = useContext(AuthContext);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const { handleGoogleSignIn, handleEmailSignup } = useContext(AuthContext);
+
+  const handleEmailSignupFunc = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const signupDetails = Object.fromEntries(formData.entries());
+    console.log(signupDetails);
+
+    const email = signupDetails.email;
+    const password = signupDetails.password;
+
+    // Password Validation
+    const isValidLength = password.length >= 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasSpecialChar = /[^A-Za-z0-9]/.test(password);
+
+    if (!isValidLength || !hasUpperCase || !hasLowerCase || !hasSpecialChar) {
+      setError(
+        "Password must be at least 8 characters and include uppercase, lowercase, and a special character."
+      );
+      return;
+    }
+
+    // Proceed with form submission (e.g., API call)
+    setError(""); // Clear error
+
+    handleEmailSignup(email, password)
+      .then((result) => {
+        // Signed up
+        const user = result.user;
+        console.log(user);
+        if (result.user) {
+          Swal.fire({
+            position: "middle",
+            icon: "success",
+            title: "Signup Successful",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+
+          setSuccess("Sign up successfull");
+        }
+        // ...
+      })
+      .catch((error) => {
+        // const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorMessage);
+        Swal.fire({
+          position: "middle",
+          icon: "error",
+          title: "Faced An Error",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // ..
+      });
+  };
 
   const handleGoogleClick = () =>
     handleGoogleSignIn()
@@ -25,37 +87,16 @@ const Signup = () => {
       })
       .catch((error) => {
         console.error("Google sign-in error:", error.message);
+        Swal.fire({
+          position: "middle",
+          icon: "error",
+          title: "Signup Unsuccessful",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         setError(error.message);
       });
 
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const handleEmailSignup = (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
-    const signupDetails = Object.fromEntries(formData.entries());
-    console.log(signupDetails);
-
-    const password = signupDetails.password;
-
-    // Password Validation
-    const isValidLength = password.length >= 8;
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasSpecialChar = /[^A-Za-z0-9]/.test(password);
-
-    if (!isValidLength || !hasUpperCase || !hasLowerCase || !hasSpecialChar) {
-      setError(
-        "Password must be at least 8 characters and include uppercase, lowercase, and a special character."
-      );
-      return;
-    }
-
-    // Proceed with form submission (e.g., API call)
-    setError(""); // Clear error
-    setSuccess("Sign up successfull");
-  };
   return (
     <div className="mx-auto max-w-md p-4 my-20 rounded-md shadow sm:p-8 bg-base-100 text-base-content">
       <h2 className="mb-3 text-3xl font-semibold text-center">
@@ -87,7 +128,7 @@ const Signup = () => {
         <hr className="w-full border-base-300" />
       </div>
 
-      <form onSubmit={handleEmailSignup} className="space-y-8">
+      <form onSubmit={handleEmailSignupFunc} className="space-y-8">
         <div className="space-y-4">
           <div className="space-y-2">
             <label htmlFor="name" className="block text-sm text-base-content">

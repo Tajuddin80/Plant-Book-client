@@ -4,7 +4,7 @@ import Plant from "./Plant";
 
 const PlantTable = () => {
   const publicPlants = useLoaderData();
-  console.log(publicPlants);
+  // console.log(publicPlants);
 
  
 
