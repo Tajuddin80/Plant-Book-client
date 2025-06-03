@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 
 import { Link } from "react-router";
 import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
+import Swal from "sweetalert2";
 
 const Signup = () => {
   const { handleGoogleSignIn } = useContext(AuthContext);
@@ -10,7 +11,17 @@ const Signup = () => {
     handleGoogleSignIn()
       .then((result) => {
         console.log("Google sign-in success:", result.user);
-        // Redirect or show success message
+
+        setSuccess("Google sign-in success:");
+        if (result.user) {
+          Swal.fire({
+            position: "middle",
+            icon: "success",
+            title: "Your work has been saved",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
       })
       .catch((error) => {
         console.error("Google sign-in error:", error.message);
@@ -22,9 +33,9 @@ const Signup = () => {
   const handleEmailSignup = (e) => {
     e.preventDefault();
     const form = e.target;
-    const formData = new FormData(form)
-    const signupDetails = Object.fromEntries(formData.entries())
-console.log(signupDetails);
+    const formData = new FormData(form);
+    const signupDetails = Object.fromEntries(formData.entries());
+    console.log(signupDetails);
 
     const password = signupDetails.password;
 

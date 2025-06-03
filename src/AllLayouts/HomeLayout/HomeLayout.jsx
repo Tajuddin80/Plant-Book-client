@@ -1,12 +1,16 @@
 import React from "react";
-import Navbar from "../../components/Navbar/Navbar";
 import { Outlet } from "react-router";
+import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
+import GlobalLoader from "../../components/Loader/GLobalLoader";
 
 const HomeLayout = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen relative">
       <Navbar />
+
+      {/* Global route loader */}
+      <GlobalLoader />
 
       <main className="flex-1">
         <Outlet />

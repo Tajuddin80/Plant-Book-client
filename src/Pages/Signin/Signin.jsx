@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router";
 import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
+import Swal from "sweetalert2";
 
 const Signin = () => {
   const handleEmailSignin = (e) => {
@@ -15,7 +16,16 @@ const Signin = () => {
   const handleGoogleClick = () =>
     handleGoogleSignIn()
       .then((result) => {
-        setSuccess("Google sign-in success:", result.user);
+        setSuccess("Google sign-in success:");
+        if (result.user) {
+          Swal.fire({
+            position: "middle",
+            icon: "success",
+            title: "Signin Successful",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
         console.log("Google sign-in success:", result.user);
         // Redirect or show success message
       })
