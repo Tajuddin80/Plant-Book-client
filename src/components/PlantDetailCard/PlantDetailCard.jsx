@@ -34,7 +34,7 @@ const PlantDetailCard = () => {
       {/* Text Content */}
       <div className="text-sm sm:text-base lg:text-lg space-y-3">
         <h2 className="text-3xl sm:text-4xl font-bold text-primary">{title}</h2>
-        <p className="italic text-secondary">{category} • {planttype}</p>
+        <p className="italic text-base-content/80">{category} • {planttype}</p>
         <p className="text-base-content mt-2">{description}</p>
         <p><strong>Care Level:</strong> <span>{difficultylevel}</span></p>
         <p><strong>Watering Frequency:</strong> <span>{wateringFrequency}</span></p>

@@ -74,7 +74,7 @@ const Navbar = () => {
             {links}
           </ul>
         </div>
-        <div className="btn btn-ghost md:text-2xl lg:text-3xl hidden md:flex">
+        <div className="items-center font-semibold md:text-2xl lg:text-3xl hidden md:flex">
           Plant
           <span>
             <img src={icon} alt="" />

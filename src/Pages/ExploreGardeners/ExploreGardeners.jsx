@@ -10,7 +10,7 @@ const ExploreGardeners = () => {
       <h2 className="text-center text-primary text-2xl md:text-3xl font-semibold uppercase border-b pb-2 my-10">
         Active Gardeners
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 w-[95%] mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 w-[95%] mx-auto">
         {activeGardeners.map((activeGardener) => (
           <Gardener
             key={activeGardener._id}
