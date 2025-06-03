@@ -1,12 +1,12 @@
-import { useState, useContext } from "react";
-
-import { Link } from "react-router";
+import { useState, useContext, useEffect } from "react";
+import { Link } from "react-router"; // ✅ FIXED: useRouter was incorrect
 import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
 import Swal from "sweetalert2";
 
 const Signup = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [googleUser, setGoogleUser] = useState(null); // 👈 local state to trigger useEffect
 
   const { handleGoogleSignIn, handleEmailSignup } = useContext(AuthContext);
 
@@ -15,10 +15,8 @@ const Signup = () => {
     const form = e.target;
     const formData = new FormData(form);
     const signupDetails = Object.fromEntries(formData.entries());
-    console.log(signupDetails);
 
-    const email = signupDetails.email;
-    const password = signupDetails.password;
+    const { email, password } = signupDetails;
 
     // Password Validation
     const isValidLength = password.length >= 8;
@@ -33,15 +31,14 @@ const Signup = () => {
       return;
     }
 
-    // Proceed with form submission (e.g., API call)
     setError(""); // Clear error
 
     handleEmailSignup(email, password)
       .then((result) => {
-        // Signed up
         const user = result.user;
-        console.log(user);
-        if (result.user) {
+        console.log("Email signup user:", user);
+
+        if (user) {
           Swal.fire({
             position: "middle",
             icon: "success",
@@ -50,14 +47,11 @@ const Signup = () => {
             timer: 1500,
           });
 
-          setSuccess("Sign up successfull");
+          setSuccess("Sign up successful");
         }
-        // ...
       })
       .catch((error) => {
-        // const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
+        console.log("Email signup error:", error.message);
         Swal.fire({
           position: "middle",
           icon: "error",
@@ -65,25 +59,26 @@ const Signup = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        // ..
       });
   };
 
-  const handleGoogleClick = () =>
+  const handleGoogleClick = () => {
     handleGoogleSignIn()
       .then((result) => {
-        console.log("Google sign-in success:", result.user);
+        const user = result.user;
+        
+        console.log("Google sign-in success:", user);
+        setGoogleUser(user); // ✅ trigger useEffect
 
-        setSuccess("Google sign-in success:");
-        if (result.user) {
-          Swal.fire({
-            position: "middle",
-            icon: "success",
-            title: "Your work has been saved",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
+        setSuccess("Google sign-in success");
+
+        Swal.fire({
+          position: "middle",
+          icon: "success",
+          title: "Successful",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       })
       .catch((error) => {
         console.error("Google sign-in error:", error.message);
@@ -96,6 +91,25 @@ const Signup = () => {
         });
         setError(error.message);
       });
+  };
+
+ 
+  useEffect(() => {
+
+
+
+
+    if (googleUser) {
+      const name = googleUser.displayName || googleUser.providerData?.[0]?.displayName;
+      const photo = googleUser.photoURL || googleUser.providerData?.[0]?.photoURL;
+      const email = googleUser?.email || googleUser.providerData?.[0]?.email;
+      //  console.log(JSON.stringify(googleUser));
+
+  
+
+      console.log("Google User Info:", { name, photo, email });
+    }
+  }, [googleUser]);
 
   return (
     <div className="mx-auto max-w-md p-4 my-20 rounded-md shadow sm:p-8 bg-base-100 text-base-content">
@@ -105,11 +119,9 @@ const Signup = () => {
 
       <div className="my-6 space-y-4">
         <button
-          onClick={() => {
-            handleGoogleClick();
-          }}
+          onClick={handleGoogleClick}
           aria-label="Register with Google"
-          className="flex items-center justify-center w-full p-4 space-x-4 btn cursor-pointer outline-0 border rounded-md focus:ring-2 focus:ring-offset-1 border-neutral text-base-content"
+          className="flex items-center justify-center w-full p-4 space-x-4 btn border rounded-md border-neutral text-base-content"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -145,10 +157,7 @@ const Signup = () => {
           </div>
 
           <div className="space-y-2">
-            <label
-              htmlFor="photourl"
-              className="block text-sm text-base-content"
-            >
+            <label htmlFor="photourl" className="block text-sm text-base-content">
               Photo URL
             </label>
             <input
@@ -174,6 +183,7 @@ const Signup = () => {
               className="w-full px-3 py-2 border rounded-md border-base-300 bg-base-100 text-base-content"
             />
           </div>
+
           <div className="space-y-2">
             <div className="flex justify-between">
               <label htmlFor="password" className="text-sm text-base-content">
@@ -194,7 +204,7 @@ const Signup = () => {
             {error ? (
               <p className="text-sm text-red-600 font-medium mt-1">{error}</p>
             ) : (
-              <p className="text-sm text-green-400 ont-medium mt-1">
+              <p className="text-sm text-green-400 font-medium mt-1">
                 {success}
               </p>
             )}
@@ -210,7 +220,7 @@ const Signup = () => {
 
         <button
           type="submit"
-          className="w-full px-8 py-3 font-semibold rounded-md btn cursor-pointer bg-primary text-primary-content"
+          className="w-full px-8 py-3 font-semibold rounded-md btn bg-primary text-primary-content"
         >
           Sign Up
         </button>
