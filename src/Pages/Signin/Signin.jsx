@@ -4,7 +4,8 @@ import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
 import Swal from "sweetalert2";
 
 const Signin = () => {
-  const { handleGoogleSignIn, handleEmailSignin } = useContext(AuthContext);
+  const { handleGoogleClick, handleEmailSignin } = useContext(AuthContext);
+  const [googleUser, setGoogleUser] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -21,7 +22,7 @@ const Signin = () => {
 
         if (user) {
           Swal.fire({
-            position: "middle",
+            position: "center",
             icon: "success",
             title: "Signin Successful",
             showConfirmButton: false,
@@ -35,7 +36,7 @@ const Signin = () => {
         const errorMessage = error.message;
         if (errorMessage) {
           Swal.fire({
-            position: "middle",
+            position: "center",
             icon: "error",
             title: "Wrong Email or Password",
             showConfirmButton: false,
@@ -45,38 +46,10 @@ const Signin = () => {
       });
   };
 
-  const handleGoogleClick = () =>
-    handleGoogleSignIn()
-      .then((result) => {
-        const user = result.user;
+  const onGoogleSignIn = () => {
+    handleGoogleClick(setGoogleUser, setSuccess, setError);
+  };
 
-        if (user) {
-          Swal.fire({
-            position: "middle",
-            icon: "success",
-            title: "Signin Successful",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          setSuccess("Google sign-in success:");
-        }
-        console.log("Google sign-in success:", user);
-        // Redirect or show success message
-      })
-      .catch((error) => {
-        console.error("Google sign-in error:", error.message);
-
-        if (error.message) {
-          Swal.fire({
-            position: "middle",
-            icon: "error",
-            title: "Signin unsuccessful",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          setError(error.message);
-        }
-      });
   return (
     <div className="mx-auto max-w-md p-4 my-20 rounded-md shadow sm:p-8 bg-base-100 text-base-content">
       <h2 className="mb-3 text-3xl font-semibold text-center">
@@ -86,9 +59,7 @@ const Signin = () => {
       <div className="my-6 space-y-4">
         <button
           aria-label="Login with Google"
-          onClick={() => {
-            handleGoogleClick();
-          }}
+          onClick={onGoogleSignIn}
           type="button"
           className="flex items-center justify-center w-full btn cursor-pointer p-4 space-x-4 border rounded-md border-base-content/20 hover:border-base-content focus:ring-2 focus:ring-offset-1"
         >
@@ -147,10 +118,11 @@ const Signin = () => {
             />
             {error ? (
               <p className="text-sm text-red-600 font-medium mt-1">{error}</p>
-            ) :(
-              <p className="text-sm text-green-300 font-medium mt-1">{success}</p>
-            ) }
-          
+            ) : (
+              <p className="text-sm text-green-300 font-medium mt-1">
+                {success}
+              </p>
+            )}
           </div>
         </div>
 

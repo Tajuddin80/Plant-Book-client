@@ -53,12 +53,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "/sharetip",
-        Component: AddNewPlantForm,
+        Component: () => (
+          <PrivateRoute>
+            <AddNewPlantForm />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/mytips",
-
-        Component: PlantDetailCard,
+        Component: () => (
+          <PrivateRoute>
+            <PlantDetailCard></PlantDetailCard>
+          </PrivateRoute>
+        ),
       },
     ],
   },
