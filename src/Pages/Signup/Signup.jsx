@@ -1,16 +1,18 @@
-import { useState, useContext, useEffect } from "react";
-import { Link } from "react-router";
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
 import Swal from "sweetalert2";
-import { updateProfile, getAuth } from "firebase/auth";
+import { updateProfile } from "firebase/auth";
+import { auth } from "../../Firebase/firebase.init";
 
 const Signup = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [googleUser, setGoogleUser] = useState(null);
 
-  const {  handleEmailSignup, handleGoogleClick } = useContext(AuthContext);
-
+  const { handleEmailSignup, handleGoogleClick, setUser } =
+    useContext(AuthContext);
+  const navigate = useNavigate();
   const handleEmailSignupFunc = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -41,33 +43,47 @@ const Signup = () => {
         photoURL: photourl,
       });
 
-      await getAuth().currentUser.reload();
-      setSuccess("Sign up successful");
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Signup Successful",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      // await auth.currentUser.reload();
+      // setUser({ ...auth.currentUser });
+      // setSuccess("Sign up successful");
 
-      console.log("User info after profile update:", {
+      const userInfo = {
         name: user?.displayName,
         photo: user?.photoURL,
         email: user?.email,
-      });
+      };
 
-      await fetch("http://localhost:3000//adduser", {
+      await fetch("http://localhost:3000/adduser", {
         method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          name: user?.displayName,
-          photo: user?.photoURL,
-          email: user?.email,
-        }),
-      });
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(userInfo),
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+          return res.json();
+        })
+        .then((data) => {
+          console.log("Server response:", data);
+          if (data.insertedCount) {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Signup Successful",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            navigate("/login", { replace: true });
+          }
+        })
+        .catch((err) => {
+          console.error("Error fetching adduser:", err);
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Failed to save user data",
+            showConfirmButton: true,
+          });
+        });
     } catch (err) {
       console.error("Signup error:", err.message);
       Swal.fire({
@@ -81,32 +97,27 @@ const Signup = () => {
     }
   };
 
-
-
   const onGoogleSignIn = () => {
     handleGoogleClick(setGoogleUser, setSuccess, setError);
   };
 
-  useEffect(() => {
-    if (googleUser) {
-      const name =
-        googleUser.displayName || googleUser.providerData?.[0]?.displayName;
-      const photo =
-        googleUser.photoURL || googleUser.providerData?.[0]?.photoURL;
-      const email = googleUser.email || googleUser.providerData?.[0]?.email;
+  // useEffect(() => {
+  //   if (googleUser) {
+  //     const name = googleUser.displayName || googleUser.providerData?.[0]?.displayName;
+  //     const photo = googleUser.photoURL || googleUser.providerData?.[0]?.photoURL;
+  //     const email = googleUser.email || googleUser.providerData?.[0]?.email;
 
-      console.log("Google User Info:", { name, photo, email });
+  //     console.log("Google User Info:", { name, photo, email });
 
-      // Optional: Save to backend
-      fetch("http://localhost:3000//adduser", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ name, photo, email }),
-      });
-    }
-  }, [googleUser]);
+  //     fetch("http://localhost:3000/adduser", {
+  //       method: "POST",
+  //       headers: {
+  //         "content-type": "application/json",
+  //       },
+  //       body: JSON.stringify({ name, photo, email }),
+  //     });
+  //   }
+  // }, [googleUser]);
 
   return (
     <div className="mx-auto max-w-md p-4 my-20 rounded-md shadow sm:p-8 bg-base-100 text-base-content">

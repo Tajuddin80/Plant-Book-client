@@ -1,3 +1,4 @@
+// components/PrivateRoute/PrivateRoute.jsx
 import { useContext } from "react";
 import { Navigate, useLocation } from "react-router";
 import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
@@ -22,3 +23,8 @@ const PrivateRoute = ({ children }) => {
 };
 
 export default PrivateRoute;
+
+
+
+
+

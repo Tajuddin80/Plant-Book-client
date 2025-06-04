@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router";
-
 import PlantTable from "../components/PlantTable/PlantTable";
 import AddNewPlantForm from "../Pages/AddNewPlantForm/AddNewPlantForm";
 import HomeLayout from "../AllLayouts/HomeLayout/HomeLayout";
@@ -14,56 +13,64 @@ import Signup from "../Pages/Signup/Signup";
 export const router = createBrowserRouter([
   {
     path: "/",
-    Component: HomeLayout,
+    element: <HomeLayout />,
     children: [
       {
         index: true,
         loader: () => fetch("http://localhost:3000/recenttips"),
-        Component: Home,
+        element: <Home />,
       },
       {
-        path: "/signin",
-        Component: Signin,
+        path: "signin",
+        element: <Signin />,
       },
       {
-        path: "/signup",
-        Component: Signup,
+        path: "signup",
+        element: <Signup />,
       },
       {
-        path: "/exploregardeners",
+        path: "exploregardeners",
         loader: () => fetch("http://localhost:3000/gardeners"),
-        Component: ExploreGardeners,
+        element: <ExploreGardeners />,
       },
       {
-        path: "/gardeners/:id",
+        path: "gardeners/:id",
         loader: ({ params }) =>
           fetch(`http://localhost:3000/gardeners/${params.id}`),
-        Component: GardenerDetailsCard,
+        element: (
+          <PrivateRoute>
+            <GardenerDetailsCard />
+          </PrivateRoute>
+        ),
       },
       {
-        path: "/browsetips",
+        path: "browsetips",
         loader: () => fetch("http://localhost:3000/alltips"),
-        Component: PlantTable,
+        element: <PlantTable />,
       },
       {
-        path: "/plantdetails/:id",
+        path: "plantdetails/:id",
         loader: ({ params }) =>
           fetch(`http://localhost:3000/plantdetails/${params.id}`),
-        Component: PlantDetailCard,
+        element: (
+          <PrivateRoute>
+            <PlantDetailCard />
+          </PrivateRoute>
+        ),
       },
       {
-        path: "/sharetip",
-        Component: () => (
+        path: "sharetip",
+        element: (
           <PrivateRoute>
             <AddNewPlantForm />
           </PrivateRoute>
         ),
       },
       {
-        path: "/mytips",
-        Component: () => (
+        path: "mytips",
+        element: (
           <PrivateRoute>
-            <PlantDetailCard></PlantDetailCard>
+            <PlantDetailCard />
           </PrivateRoute>
         ),
       },

@@ -7,10 +7,9 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
-
-import { AuthContext } from "./AuthContext";
 import { auth } from "../../Firebase/firebase.init";
 import Swal from "sweetalert2";
+import { AuthContext } from "./AuthContext";
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -18,38 +17,31 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Signup
+  // Email Signup
   const handleEmailSignup = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  // Signin
+  // Email Signin
   const handleEmailSignin = (email, password) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  // Google
+  // Google Signin
   const handleGoogleSignIn = () => {
     setLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
 
-  // Signout
-  const handleLogout = () => {
-    setLoading(true);
-    return signOut(auth);
-  };
-
+  // Google helper
   const handleGoogleClick = async (setGoogleUser, setSuccess, setError) => {
     try {
       const result = await handleGoogleSignIn();
       const user = result.user;
-
       setGoogleUser(user);
       setSuccess("Google sign-in success");
-
       Swal.fire({
         position: "center",
         icon: "success",
@@ -57,10 +49,22 @@ const AuthProvider = ({ children }) => {
         showConfirmButton: false,
         timer: 1500,
       });
-    } catch (error) {
-      console.error("Google sign-in error:", error.message);
-      setError(error.message);
 
+      const userInfo = {
+        name: user?.displayName,
+        photo: user?.photoURL,
+        email: user?.email,
+      };
+
+      await fetch("http://localhost:3000/adduser", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(userInfo),
+      });
+    } catch (error) {
+      setError(error.message);
       Swal.fire({
         position: "center",
         icon: "error",
@@ -72,34 +76,36 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  // Listen for auth state changes
+  // Sign Out
+  const handleLogout = () => {
+    setLoading(true);
+    return signOut(auth);
+  };
+
+  // Listen to auth state change
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
-        await currentUser.reload(); 
-        setUser(auth.currentUser); 
-      } else {
-        setUser(null);
-      }
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
       setLoading(false);
     });
     return () => unsubscribe();
   }, []);
 
   return (
-    <AuthContext.Provider
+    <AuthContext
       value={{
         user,
         loading,
-        handleGoogleSignIn,
         handleEmailSignup,
         handleEmailSignin,
         handleLogout,
         handleGoogleClick,
+        setUser,
       }}
     >
       {children}
-    </AuthContext.Provider>
+    </AuthContext>
   );
 };
+
 export default AuthProvider;

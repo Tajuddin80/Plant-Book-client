@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
+// import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
 import Swal from "sweetalert2";
 
@@ -8,6 +9,10 @@ const Signin = () => {
   const [googleUser, setGoogleUser] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
 
   const handleEmailSigninFunc = (e) => {
     e.preventDefault();
@@ -18,8 +23,6 @@ const Signin = () => {
     handleEmailSignin(loginDetails.email, loginDetails.password)
       .then((result) => {
         const user = result.user;
-        console.log(user);
-
         if (user) {
           Swal.fire({
             position: "center",
@@ -28,13 +31,16 @@ const Signin = () => {
             showConfirmButton: false,
             timer: 1500,
           });
-          setSuccess("Google sign-in success:");
+          setSuccess("Signin successful");
+          setError("");
+          navigate(from, { replace: true });
         }
       })
       .catch((error) => {
-        // const errorCode = error.code;
         const errorMessage = error.message;
         if (errorMessage) {
+          setError(errorMessage);
+          setSuccess("");
           Swal.fire({
             position: "center",
             icon: "error",
