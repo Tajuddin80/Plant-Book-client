@@ -1,5 +1,8 @@
 // import React, { useState } from "react";
 
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
+
 // https://i.ibb.co/CsN02xmh/img1.jpg
 // https://i.ibb.co/s9whRjNj/img2.jpg
 // https://i.ibb.co/xPyzyks/img3.jpg
@@ -17,43 +20,65 @@
 // https://i.ibb.co/CKvp8jn7/newplant-7.jpg
 // https://i.ibb.co/dsJLk0Lr/newplant-8.jpg
 
-
-
-
-
 const AddNewPlantForm = () => {
-  // const [formData, setFormData] = useState({
-  //   image: "",
-  //   name: "",
-  //   category: "",
-  //   careLevel: "",
-  //   wateringFrequency: "",
-  //   lastWateredDate: "",
-  //   nextWateringDate: "",
-  //   healthStatus: "",
-  //   userName: "md Tajuddin",
-  //   userEmail: "cmtajuddinchowdhury@gmail.com",
-  //   description: "",
-  // });
+  const { user } = useContext(AuthContext);
 
+  const [formData, setFormData] = useState({
+    availability: "",
+    category: "",
+    description: "",
+    difficultylevel: "",
+    healthStatus: "",
+    image: "",
+    planttype: "",
+    title: "",
+    wateringFrequency: "",
+    userEmail: "",
+    userName: "",
+  });
+
+  // Pre-fill user data when available
+  useEffect(() => {
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        userEmail: user.email || "",
+        userName: user.displayName || "",
+      }));
+    }
+  }, [user]);
+
+  // Handle form input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Submit form data
   const handleSubmit = (e) => {
     e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
-    const plantData = Object.fromEntries(formData.entries());
-    console.log("Form submitted:", plantData);
-    // Submit logic here
+     const form = e.target;
+    const formsData = new FormData(form);
+    const plantDetails = Object.fromEntries(formsData.entries());
+    // const { name, photourl, email, password } = signupDetails;
+    
+    setFormData(plantDetails)
+    console.log("Form submitted:", formData);
 
     fetch("http://localhost:3000/addnewtip", {
       method: "POST",
       headers: {
-        "content-type": "application/json",
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(plantData),
+      body: JSON.stringify(formData),
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        console.log("Server response:", data);
+        // Optionally reset the form here
+      })
+      .catch((err) => {
+        console.error("Submission error:", err);
       });
   };
 
@@ -132,7 +157,7 @@ const AddNewPlantForm = () => {
               className="input input-disabled w-full"
             />
           </div>
-      
+
           {/* Availability*/}
           <div>
             <label className="block mb-1 font-medium">Availability</label>
@@ -176,8 +201,10 @@ const AddNewPlantForm = () => {
             <input
               type="text"
               name="userName"
-              // value={formData.userName}
-              disabled
+              value={formData.userName}
+              onChange={handleChange}
+              readOnly
+              // disabled
               className="input input-disabled w-full"
             />
           </div>
@@ -188,8 +215,10 @@ const AddNewPlantForm = () => {
             <input
               type="email"
               name="userEmail"
-              // value={formData.userEmail}
-              disabled
+              value={formData.userEmail}
+              onChange={handleChange}
+              readOnly
+              // disabled
               className="input input-disabled w-full"
             />
           </div>

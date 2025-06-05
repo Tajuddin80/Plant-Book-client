@@ -1,24 +1,27 @@
 import { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useLocation } from "react-router";
 import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
 import Swal from "sweetalert2";
 import { updateProfile } from "firebase/auth";
-import { auth } from "../../Firebase/firebase.init";
+// import { auth } from "../../Firebase/firebase.init";
 
 const Signup = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [googleUser, setGoogleUser] = useState(null);
 
-  const { handleEmailSignup, handleGoogleClick, setUser } =
+  const { handleEmailSignup, setUser, setEmail, setUsername,handleGoogleSignIn, setPhoto } =
     useContext(AuthContext);
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const from = location.state?.from?.pathname || "/";
+
   const handleEmailSignupFunc = async (e) => {
     e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
-    const signupDetails = Object.fromEntries(formData.entries());
-    const { name, photourl, email, password } = signupDetails;
+    const formData = new FormData(e.target);
+    const { name, photourl, email, password } = Object.fromEntries(
+      formData.entries()
+    );
 
     const isValidLength = password.length >= 8;
     const hasUpperCase = /[A-Z]/.test(password);
@@ -43,9 +46,58 @@ const Signup = () => {
         photoURL: photourl,
       });
 
-      // await auth.currentUser.reload();
-      // setUser({ ...auth.currentUser });
-      // setSuccess("Sign up successful");
+      const userInfo = { name, photo: photourl, email };
+
+      fetch("http://localhost:3000/adduser", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(userInfo),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.insertedId) {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Signup Successful!",
+              showConfirmButton: false,
+              timer: 2000,
+            });
+            setUser(user);
+            setUsername(user?.displayName)
+            setEmail(user?.email);
+            setPhoto(user?.photoURL);
+
+
+
+console.log(user);
+
+            navigate(from, { replace: true });
+          } else {
+            throw new Error("Failed to save user data");
+          }
+        });
+    } catch (err) {
+      console.error("Signup error:", err.message);
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Signup Failed",
+        text: err.message,
+        showConfirmButton: true,
+      });
+      setError(err.message);
+    }
+  };
+
+  // const onGoogleSignIn = () => {
+  //    (setSuccess, setError);
+  // };
+
+  const handleGoogleClick = async () => {
+    try {
+      const result = await handleGoogleSignIn();
+      const user = result.user;
 
       const userInfo = {
         name: user?.displayName,
@@ -55,69 +107,38 @@ const Signup = () => {
 
       await fetch("http://localhost:3000/adduser", {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: {
+          "content-type": "application/json",
+        },
         body: JSON.stringify(userInfo),
       })
-        .then((res) => {
-          if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-          return res.json();
-        })
+        .then((res) => res.json())
         .then((data) => {
-          console.log("Server response:", data);
-          if (data.insertedCount) {
+          if (data.insertedId) {
             Swal.fire({
               position: "center",
               icon: "success",
-              title: "Signup Successful",
+              title: "Google Sign-in Successful",
               showConfirmButton: false,
               timer: 1500,
             });
-            navigate("/login", { replace: true });
+            setUser(user);
+            setSuccess("Google Sign-in Successful");
+            navigate(from, { replace: true });
           }
-        })
-        .catch((err) => {
-          console.error("Error fetching adduser:", err);
-          Swal.fire({
-            position: "center",
-            icon: "error",
-            title: "Failed to save user data",
-            showConfirmButton: true,
-          });
         });
-    } catch (err) {
-      console.error("Signup error:", err.message);
+    } catch (error) {
+      setError(error.message);
       Swal.fire({
         position: "center",
         icon: "error",
-        title: "Signup Failed",
+        title: "Sign-in Failed",
+        text: error.message,
         showConfirmButton: false,
         timer: 1500,
       });
-      setError(err.message);
     }
   };
-
-  const onGoogleSignIn = () => {
-    handleGoogleClick(setGoogleUser, setSuccess, setError);
-  };
-
-  // useEffect(() => {
-  //   if (googleUser) {
-  //     const name = googleUser.displayName || googleUser.providerData?.[0]?.displayName;
-  //     const photo = googleUser.photoURL || googleUser.providerData?.[0]?.photoURL;
-  //     const email = googleUser.email || googleUser.providerData?.[0]?.email;
-
-  //     console.log("Google User Info:", { name, photo, email });
-
-  //     fetch("http://localhost:3000/adduser", {
-  //       method: "POST",
-  //       headers: {
-  //         "content-type": "application/json",
-  //       },
-  //       body: JSON.stringify({ name, photo, email }),
-  //     });
-  //   }
-  // }, [googleUser]);
 
   return (
     <div className="mx-auto max-w-md p-4 my-20 rounded-md shadow sm:p-8 bg-base-100 text-base-content">
@@ -127,7 +148,7 @@ const Signup = () => {
 
       <div className="my-6 space-y-4">
         <button
-          onClick={onGoogleSignIn}
+          onClick={handleGoogleClick}
           aria-label="Register with Google"
           className="flex items-center justify-center w-full p-4 space-x-4 btn border rounded-md border-neutral text-base-content"
         >
@@ -176,65 +197,63 @@ const Signup = () => {
               name="photourl"
               id="photourl"
               required
-              placeholder="Photo URL"
+              placeholder="https://example.com/photo.jpg"
               className="w-full px-3 py-2 border rounded-md border-base-300 bg-base-100 text-base-content"
             />
           </div>
 
           <div className="space-y-2">
             <label htmlFor="email" className="block text-sm text-base-content">
-              Email address
+              Email
             </label>
             <input
               type="email"
               name="email"
               id="email"
               required
-              placeholder="e.g., you@example.com"
+              placeholder="your@email.com"
               className="w-full px-3 py-2 border rounded-md border-base-300 bg-base-100 text-base-content"
             />
           </div>
 
           <div className="space-y-2">
-            <div className="flex justify-between">
-              <label htmlFor="password" className="text-sm text-base-content">
-                Password
-              </label>
-              <button className="text-xs hover:underline text-base-content/70">
-                Forgot password?
-              </button>
-            </div>
+            <label
+              htmlFor="password"
+              className="block text-sm text-base-content"
+            >
+              Password
+            </label>
             <input
               type="password"
               name="password"
               id="password"
               required
-              placeholder="Password"
+              placeholder="********"
               className="w-full px-3 py-2 border rounded-md border-base-300 bg-base-100 text-base-content"
             />
-            {error ? (
-              <p className="text-sm text-red-600 font-medium mt-1">{error}</p>
-            ) : (
-              <p className="text-sm text-green-400 font-medium mt-1">
-                {success}
-              </p>
-            )}
           </div>
         </div>
 
-        <p className="text-sm text-center text-base-content/70">
-          Already have an account?{" "}
-          <Link to="/signin" className="link link-hover text-primary">
-            Sign in here
-          </Link>
-        </p>
+        <div className="text-red-500 text-sm text-center">{error}</div>
+        <div className="text-green-500 text-sm text-center">{success}</div>
 
         <button
           type="submit"
-          className="w-full px-8 py-3 font-semibold rounded-md btn bg-primary text-primary-content"
+          className="w-full px-8 py-3 font-semibold rounded-md bg-neutral text-neutral-content"
         >
-          Sign Up
+          Register
         </button>
+
+        <p className="text-sm text-center text-base-content/70">
+          Already have an account?{" "}
+          <Link
+            to="/signin"
+            state={{ from: location.state?.from }}
+            className="text-primary font-medium"
+          >
+            Login here
+          </Link>
+        </p>
       </form>
     </div>
   );

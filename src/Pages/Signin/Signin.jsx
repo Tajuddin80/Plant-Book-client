@@ -1,23 +1,28 @@
 import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
-// import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
 import Swal from "sweetalert2";
 
 const Signin = () => {
-  const { handleGoogleClick, handleEmailSignin } = useContext(AuthContext);
-  const [googleUser, setGoogleUser] = useState(null);
+  const {
+    handleGoogleSignIn,
+    handleEmailSignin,
+    setUser,
+    setPhoto,
+    setUsername,
+    setEmail,
+  } = useContext(AuthContext);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const location = useLocation();
   const navigate = useNavigate();
+
   const from = location.state?.from?.pathname || "/";
 
   const handleEmailSigninFunc = (e) => {
     e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
+    const formData = new FormData(e.target);
     const loginDetails = Object.fromEntries(formData.entries());
 
     handleEmailSignin(loginDetails.email, loginDetails.password)
@@ -31,29 +36,75 @@ const Signin = () => {
             showConfirmButton: false,
             timer: 1500,
           });
+
           setSuccess("Signin successful");
           setError("");
+
+          setUser(user);
+          setUsername(user?.displayName);
+          setPhoto(user?.photoURL);
+          setEmail(user?.email);
+
           navigate(from, { replace: true });
         }
       })
       .catch((error) => {
-        const errorMessage = error.message;
-        if (errorMessage) {
-          setError(errorMessage);
-          setSuccess("");
-          Swal.fire({
-            position: "center",
-            icon: "error",
-            title: "Wrong Email or Password",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
+        setError(error.message);
+        setSuccess("");
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Wrong Email or Password",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
   };
 
-  const onGoogleSignIn = () => {
-    handleGoogleClick(setGoogleUser, setSuccess, setError);
+  const handleGoogleClick = async () => {
+    try {
+      const result = await handleGoogleSignIn();
+      const user = result.user;
+
+      const userInfo = {
+        name: user?.displayName,
+        photo: user?.photoURL,
+        email: user?.email,
+      };
+
+      await fetch("http://localhost:3000/adduser", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(userInfo),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.insertedId) {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Google Sign-in Successful",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            setUser(user);
+            setSuccess("Google Sign-in Successful");
+            navigate(from, { replace: true });
+          }
+        });
+    } catch (error) {
+      setError(error.message);
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Sign-in Failed",
+        text: error.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
 
   return (
@@ -65,7 +116,7 @@ const Signin = () => {
       <div className="my-6 space-y-4">
         <button
           aria-label="Login with Google"
-          onClick={onGoogleSignIn}
+          onClick={handleGoogleClick}
           type="button"
           className="flex items-center justify-center w-full btn cursor-pointer p-4 space-x-4 border rounded-md border-base-content/20 hover:border-base-content focus:ring-2 focus:ring-offset-1"
         >
@@ -134,7 +185,11 @@ const Signin = () => {
 
         <p className="text-sm text-center text-base-content/70">
           Don’t have an account?{" "}
-          <Link to="/signup" className="link link-hover text-primary">
+          <Link
+            to="/signup"
+            state={{ from: location.state?.from }}
+            className="link link-hover text-primary"
+          >
             Sign up here
           </Link>
         </p>

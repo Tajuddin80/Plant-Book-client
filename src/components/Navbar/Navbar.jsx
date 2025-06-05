@@ -1,10 +1,10 @@
 import React, {  useContext } from "react";
 import { NavLink, Link } from "react-router";
 import icon from "../../assets/extra-section/plant.png";
-import { Tooltip } from 'react-tooltip'; // ✅ correct
+import { Tooltip } from 'react-tooltip'; 
 import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
 const Navbar = () => {
-  const { user, handleLogout } = useContext(AuthContext);
+  const { user, handleLogout , photo, username, email} = useContext(AuthContext);
 
   const links = (
     <>
@@ -119,16 +119,14 @@ const Navbar = () => {
             role="button"
             className="btn btn-ghost btn-circle avatar"
             data-tooltip-id="userTooltip"
-            data-tooltip-content={user?.displayName || user?.email || "User"}
+            data-tooltip-content={username || email || "User"}
           >
             <div className="w-10 rounded-full">
               <img
                 src={
-                  user.photoURL ||
-                  user.providerData?.[0]?.photoURL ||
-                  "https://i.ibb.co/2yLrjRs/default-user.png" // fallback image
+                photo
                 }
-                alt={user.displayName || "User profile"}
+                alt={username || "User profile"}
                 style={{ width: "40px", height: "40px", borderRadius: "50%" }}
               />
             </div>
