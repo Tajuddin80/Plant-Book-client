@@ -1,4 +1,4 @@
-
+import { Typewriter } from "react-simple-typewriter";
 import plantImg from "../../assets/extra-section/leaf animation.gif";
 
 export default function AboutUs() {
@@ -8,11 +8,18 @@ export default function AboutUs() {
         <img src={plantImg} alt="" />
       </div>
       <h1 className="text-4xl sm:text-5xl font-bold text-primary mb-4">
-        About Plant Care Tracker
+        <Typewriter
+          words={["Plant Tips Platform"]}
+          loop={true}
+          cursor
+          cursorStyle="_"
+          typeSpeed={100}
+          deleteSpeed={100}
+          delaySpeed={1000}
+        />
       </h1>
       <p className="text-lg sm:text-xl text-base-content mb-6">
-        Welcome to{" "}
-        <span className="font-semibold text-3xl">Plant Care Tracker</span> –
+        Welcome to <span className="font-semibold text-3xl">Plant Book</span> –
         your personal assistant for keeping your green friends healthy and
         happy!
       </p>
