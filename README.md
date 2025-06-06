@@ -28,14 +28,9 @@ PlantBook is a platform for gardening enthusiasts to share tips, find local gard
 - SweetAlert2 for beautiful alerts and notifications
 - Swiper for sliders/carousels
 - React Tooltip for tooltips
+- React Typewriter
 - Lottie animations with `@lottiefiles/dotlottie-react`
 
 ---
 
-## Getting Started
-
-### Prerequisites
-
-- Node.js (v18+ recommended)
-- npm or yarn package manager
 
