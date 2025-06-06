@@ -69,7 +69,7 @@ const AddNewPlantForm = () => {
   };
 
   return (
-    <div className="min-h-screen my-20 flex items-center justify-center bg-base-50 px-4 py-10 text-base-content">
+    <div className="min-h-screen my-7 flex items-center justify-center bg-base-50 px-4 py-10 text-base-content">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-5xl bg-base-100 shadow-md rounded-lg p-8"

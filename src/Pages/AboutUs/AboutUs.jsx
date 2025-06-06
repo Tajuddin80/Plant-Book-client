@@ -9,7 +9,7 @@ export default function AboutUs() {
       About Plant Care Tracker
       </h1>
       <p className="text-lg sm:text-xl text-base-content mb-6">
-        Welcome to <span className="font-semibold text-secondary">Plant Care Tracker</span> – your personal assistant for keeping your green friends healthy and happy!
+        Welcome to <span className="font-semibold text-3xl">Plant Care Tracker</span> – your personal assistant for keeping your green friends healthy and happy!
       </p>
       <p className="max-w-2xl text-base sm:text-lg text-base-content opacity-80">
         This web app helps plant lovers track watering schedules, monitor plant health, and manage a personalized plant collection with ease.

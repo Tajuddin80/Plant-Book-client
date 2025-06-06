@@ -6,7 +6,7 @@ const Home = () => {
   const datas = useLoaderData();
   // console.log(datas);
 
-  //   https://i.ibb.co/YBKk4N3B/Screenshot-From-2025-06-02-12-40-53.png
+  //  https://i.ibb.co/YBKk4N3B/Screenshot-From-2025-06-02-12-40-53.png
   // https://i.ibb.co/VcYSRD6x/Screenshot-From-2025-06-02-12-41-01.png
   // https://i.ibb.co/wFLBdC00/Screenshot-From-2025-06-02-12-49-54.png
   // https://i.ibb.co/TB6wZGDW/Screenshot-From-2025-06-02-12-41-55.png
@@ -23,8 +23,8 @@ const Home = () => {
       <Slider></Slider>
       </div>
       {/* <div className="text-center text-5xl font-semibold ">Recent Tips</div> */}
-         <h2 className="text-center mt-90 md:mt-20 text-primary text-2xl md:text-3xl font-semibold uppercase border-b pb-2 my-10">
-      Recently added
+         <h2 className="text-center mt-50 md:mt-20 text-primary text-2xl md:text-3xl font-semibold uppercase border-b pb-2 my-10">
+     Top Trending Tips
       </h2>
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  md:mt-10 w-[90vw] mx-auto gap-10">
 

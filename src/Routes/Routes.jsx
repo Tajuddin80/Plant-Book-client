@@ -10,7 +10,6 @@ import GardenerDetailsCard from "../Pages/ExploreGardeners/GardenerDetailsCard";
 import Signin from "../Pages/Signin/Signin";
 import Signup from "../Pages/Signup/Signup";
 import Error404 from "../components/Error404/Error404";
-import NoPlantsMessage from "../components/NoPlantsMessage/NoPlantsMessage";
 import MyTips from "../Pages/MyTips/MyTips";
 import UpdateTip from "../Pages/MyTips/UpdateTip";
 import AboutUs from "../Pages/AboutUs/AboutUs";
@@ -19,7 +18,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <HomeLayout />,
-    errorElement: <Error404 />, // global error
+    errorElement: <Error404 />, 
     children: [
       {
         index: true,
