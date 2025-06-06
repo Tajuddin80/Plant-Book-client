@@ -56,7 +56,8 @@ const AddNewPlantForm = () => {
             timer: 1500,
           });
           form.reset();
-          navigate("/mytips");
+         
+              navigate(`/mytips/${data.userEmail || user?.email}`)
         }
       })
       .catch((err) => {
