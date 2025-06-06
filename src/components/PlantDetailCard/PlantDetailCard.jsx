@@ -40,7 +40,7 @@ const PlantDetailCard = () => {
     if (!user || liked) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/alltips/${_id}/like`, {
+      const res = await fetch(`https://plant-book-server.vercel.app/alltips/${_id}/like`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -5,7 +5,7 @@ import PlantCard from "./PlantCard";
 import Faq from "../../components/Faq/Faq";
 const Home = () => {
   const datas = useLoaderData();
-  // console.log(datas);
+  
 
   //  https://i.ibb.co/YBKk4N3B/Screenshot-From-2025-06-02-12-40-53.png
   // https://i.ibb.co/VcYSRD6x/Screenshot-From-2025-06-02-12-41-01.png

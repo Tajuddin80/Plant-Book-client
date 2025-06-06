@@ -31,7 +31,7 @@ const PlantCard = ({ data }) => {
     if (!user || hasLiked) return;
 
     try {
-      const res = await axios.put(`http://localhost:3000/alltips/${_id}/like`, {
+      const res = await axios.put(`https://plant-book-server.vercel.app/alltips/${_id}/like`, {
         userEmail: user.email,
       });
 

@@ -72,7 +72,7 @@ const Signin = () => {
         email: user?.email,
       };
 
-      await fetch("http://localhost:3000/adduser", {
+      await fetch("https://plant-book-server.vercel.app/adduser", {
         method: "POST",
         headers: {
           "content-type": "application/json",

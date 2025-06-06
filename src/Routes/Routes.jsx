@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        loader: () => fetch("http://localhost:3000/recenttips"),
+        loader: () => fetch("https://plant-book-server.vercel.app/recenttips"),
         element: <Home />,
         errorElement: <Error404 />,
       },
@@ -43,14 +43,14 @@ export const router = createBrowserRouter([
       },
       {
         path: "exploregardeners",
-        loader: () => fetch("http://localhost:3000/gardeners"),
+        loader: () => fetch("https://plant-book-server.vercel.app/gardeners"),
         element: <ExploreGardeners />,
         errorElement: <Error404 />,
       },
       {
         path: "gardeners/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/gardeners/${params.id}`),
+          fetch(`https://plant-book-server.vercel.app/gardeners/${params.id}`),
         element: (
           <PrivateRoute>
             <GardenerDetailsCard />
@@ -60,14 +60,14 @@ export const router = createBrowserRouter([
       },
       {
         path: "browsetips",
-        loader: () => fetch("http://localhost:3000/alltips"),
+        loader: () => fetch("https://plant-book-server.vercel.app/alltips"),
         element: <PlantTable />,
         errorElement: <Error404 />,
       },
       {
         path: "plantdetails/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/plantdetails/${params.id}`),
+          fetch(`https://plant-book-server.vercel.app/plantdetails/${params.id}`),
         element: (
           <PrivateRoute>
             <PlantDetailCard />

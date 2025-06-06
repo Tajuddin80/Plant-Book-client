@@ -23,10 +23,10 @@ const UpdateTip = () => {
 
   // Fetch tip data on mount
   useEffect(() => {
-    fetch(`http://localhost:3000/alltips/${id}`)
+    fetch(`https://plant-book-server.vercel.app/alltips/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+     
         
         setFormData({
           title: data.title || "",
@@ -43,7 +43,7 @@ const UpdateTip = () => {
         });
       })
       .catch((err) => {
-        console.error("Error loading tip data:", err);
+        // console.error("Error loading tip data:", err);
       });
   }, [id, user]);
 
@@ -58,7 +58,7 @@ const UpdateTip = () => {
       denyButtonText: `Don't save`,
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3000/alltips/${id}`, {
+        fetch(`https://plant-book-server.vercel.app/alltips/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -74,7 +74,7 @@ const UpdateTip = () => {
             }
           })
           .catch((err) => {
-            console.error("Submission error:", err);
+            // console.error("Submission error:", err);
           });
       } else if (result.isDenied) {
         Swal.fire("Changes are not saved", "", "info");

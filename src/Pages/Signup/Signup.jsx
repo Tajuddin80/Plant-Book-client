@@ -3,7 +3,6 @@ import { Link, useNavigate, useLocation } from "react-router";
 import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
 import Swal from "sweetalert2";
 import { updateProfile } from "firebase/auth";
-// import { auth } from "../../Firebase/firebase.init";
 
 const Signup = () => {
   const [error, setError] = useState("");
@@ -48,7 +47,7 @@ const Signup = () => {
 
       const userInfo = { name, photo: photourl, email };
 
-      fetch("http://localhost:3000/adduser", {
+      fetch("https://plant-book-server.vercel.app/adduser", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(userInfo),
@@ -67,18 +66,13 @@ const Signup = () => {
             setUsername(user?.displayName)
             setEmail(user?.email);
             setPhoto(user?.photoURL);
-
-
-
-console.log(user);
-
             navigate(from, { replace: true });
           } else {
             throw new Error("Failed to save user data");
           }
         });
     } catch (err) {
-      console.error("Signup error:", err.message);
+      // console.error("Signup error:", err.message);
       Swal.fire({
         position: "center",
         icon: "error",
@@ -90,9 +84,7 @@ console.log(user);
     }
   };
 
-  // const onGoogleSignIn = () => {
-  //    (setSuccess, setError);
-  // };
+
 
   const handleGoogleClick = async () => {
     try {
@@ -105,7 +97,7 @@ console.log(user);
         email: user?.email,
       };
 
-      await fetch("http://localhost:3000/adduser", {
+      await fetch("https://plant-book-server.vercel.app/adduser", {
         method: "POST",
         headers: {
           "content-type": "application/json",

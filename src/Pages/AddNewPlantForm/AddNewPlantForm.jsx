@@ -36,7 +36,7 @@ const AddNewPlantForm = () => {
 
 
 
-    fetch("http://localhost:3000/addnewtip", {
+    fetch("https://plant-book-server.vercel.app/addnewtip", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -46,7 +46,7 @@ const AddNewPlantForm = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.insertedId) {
-          console.log("Server response:", data);
+         
           Swal.fire({
             position: "center",
             icon: "success",
@@ -59,7 +59,7 @@ const AddNewPlantForm = () => {
         }
       })
       .catch((err) => {
-        console.error("Submission error:", err);
+        // console.error("Submission error:", err);
       });
   };
 

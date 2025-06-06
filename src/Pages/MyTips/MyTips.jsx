@@ -10,10 +10,10 @@ const MyTips = () => {
 
   useEffect(() => {
     if (email) {
-      fetch(`http://localhost:3000/mytips/${email}`)
+      fetch(`https://plant-book-server.vercel.app/mytips/${email}`)
         .then((res) => res.json())
         .then((data) => setMyPlants(data))
-        .catch((err) => console.error("Fetch error:", err));
+        // .catch((err) => console.error("Fetch error:", err));
     }
   }, [email]);
 
@@ -29,12 +29,12 @@ const MyTips = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3000/alltips/${id}`, {
+        fetch(`https://plant-book-server.vercel.app/alltips/${id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log(data);
+          
             if (data.deletedCount > 0) {
               Swal.fire({
                 position: "center",
