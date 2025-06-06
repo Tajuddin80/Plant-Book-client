@@ -1,50 +1,93 @@
-
-// import { useContext } from 'react';
-// import { useLoaderData } from 'react-router';
-import { AuthContext } from '../../AllContexts/AuthContext/AuthContext';
-import { useContext } from 'react';
-
-
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import NoPlantsMessage from "../../components/NoPlantsMessage/NoPlantsMessage";
+import MyPlant from "./MyPlant";
+import Swal from "sweetalert2";
 
 const MyTips = () => {
-    const {user} = useContext(AuthContext)
+  const { email } = useParams();
+  const [myPlants, setMyPlants] = useState([]);
+
+  useEffect(() => {
+    if (email) {
+      fetch(`http://localhost:3000/mytips/${email}`)
+        .then((res) => res.json())
+        .then((data) => setMyPlants(data))
+        .catch((err) => console.error("Fetch error:", err));
+    }
+  }, [email]);
 
 
-const email = user?.email; // or however you get it
-console.log(email);
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:3000/alltips/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            if (data.deletedCount > 0) {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Your tip has been deleted",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              // Remove item from state
+              setMyPlants((prev) => prev.filter((plant) => plant._id !== id));
+            }
+          })
+          .catch((error) => {
+            console.error("Delete error:", error);
 
+            Swal.fire({
+              position: "center",
+              icon: "Error",
+              title: "Something went wrong while deleting.",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          });
+      }
+    });
+  };
 
-fetch(`http://localhost:3000/mytips/${email}`)
-  .then((res) => res.json())
-  .then((data) => {
-    console.log("Tips:", data);
-  })
-  .catch((err) => {
-    console.error("Fetch error:", err);
-  });
- return (
+  return myPlants.length ? (
     <div className="overflow-x-auto">
-      <table className="w-[95vw] my-20  mx-auto bg-base-50 border border-base-300 rounded-lg shadow-sm text-base-content">
+      <table className="w-[95vw] my-20 mx-auto bg-base-50 border border-base-300 rounded-lg shadow-sm text-base-content">
         <thead className="bg-primary text-primary-content">
           <tr>
             <th className="py-3 px-4 text-left">Image</th>
             <th className="py-3 px-4 text-left">Title</th>
             <th className="py-3 px-4 text-left">Category</th>
-            <th className="py-3 px-4 text-left">Health Status</th>
-            <th className="py-3 px-4 text-left">Care Level</th>
-            <th className="py-3 px-4 text-left">View Details</th>
+            <th className="py-3 px-4 text-left">Availability</th>
+            <th className="py-3 px-4 text-left">Edit</th>
+            <th className="py-3 px-4 text-left">Delete</th>
           </tr>
         </thead>
         <tbody>
           {myPlants.map((plant) => (
-            <Plant
+            <MyPlant
               key={plant._id}
+              handleDelete={handleDelete}
               plant={plant}
-            ></Plant>
+            />
           ))}
         </tbody>
       </table>
     </div>
+  ) : (
+    <NoPlantsMessage />
   );
 };
 

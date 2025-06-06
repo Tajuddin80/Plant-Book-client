@@ -9,29 +9,44 @@ import PlantDetailCard from "../components/PlantDetailCard/PlantDetailCard";
 import GardenerDetailsCard from "../Pages/ExploreGardeners/GardenerDetailsCard";
 import Signin from "../Pages/Signin/Signin";
 import Signup from "../Pages/Signup/Signup";
+import Error404 from "../components/Error404/Error404";
+import NoPlantsMessage from "../components/NoPlantsMessage/NoPlantsMessage";
+import MyTips from "../Pages/MyTips/MyTips";
+import UpdateTip from "../Pages/MyTips/UpdateTip";
+import AboutUs from "../Pages/AboutUs/AboutUs";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <HomeLayout />,
+    errorElement: <Error404 />, // global error
     children: [
       {
         index: true,
         loader: () => fetch("http://localhost:3000/recenttips"),
         element: <Home />,
+        errorElement: <Error404 />,
       },
       {
         path: "signin",
         element: <Signin />,
+        errorElement: <Error404 />,
       },
       {
         path: "signup",
         element: <Signup />,
+        errorElement: <Error404 />,
+      },
+       {
+        path: "aboutus",
+        element: <AboutUs></AboutUs> ,
+        errorElement: <Error404 />,
       },
       {
         path: "exploregardeners",
         loader: () => fetch("http://localhost:3000/gardeners"),
         element: <ExploreGardeners />,
+        errorElement: <Error404 />,
       },
       {
         path: "gardeners/:id",
@@ -42,11 +57,13 @@ export const router = createBrowserRouter([
             <GardenerDetailsCard />
           </PrivateRoute>
         ),
+        errorElement: <Error404 />,
       },
       {
         path: "browsetips",
         loader: () => fetch("http://localhost:3000/alltips"),
         element: <PlantTable />,
+        errorElement: <Error404 />,
       },
       {
         path: "plantdetails/:id",
@@ -57,6 +74,7 @@ export const router = createBrowserRouter([
             <PlantDetailCard />
           </PrivateRoute>
         ),
+        errorElement: <Error404 />,
       },
       {
         path: "sharetip",
@@ -65,15 +83,34 @@ export const router = createBrowserRouter([
             <AddNewPlantForm />
           </PrivateRoute>
         ),
+        errorElement: <Error404 />,
       },
       {
-        path: "mytips",
+        path: "mytips/:email",
         element: (
           <PrivateRoute>
-             <AddNewPlantForm />
+            <MyTips />
           </PrivateRoute>
         ),
+        errorElement: <Error404 />,
       },
+        {
+        path: "updatetip/:id",
+        element: (
+          <PrivateRoute>
+         <UpdateTip></UpdateTip>
+          </PrivateRoute>
+        ),
+        errorElement: <Error404 />,
+      },
+
+
+
+      
     ],
+  },
+  {
+    path: "*",
+    element: <Error404 />, // catch-all fallback for unknown routes
   },
 ]);

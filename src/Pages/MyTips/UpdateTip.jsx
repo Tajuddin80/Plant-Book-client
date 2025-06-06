@@ -1,81 +1,95 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router";
+import { useParams } from "react-router";
 
-
-const AddNewPlantForm = () => {
+const UpdateTip = () => {
   const { user } = useContext(AuthContext);
- const navigate = useNavigate();
+  const { id } = useParams();
+
   const [formData, setFormData] = useState({
+    title: "",
+    planttype: "",
+    category: "",
+    difficultylevel: "",
+    image: "",
+    availability: "",
+    wateringFrequency: "",
+    healthStatus: "",
+    description: "",
     userName: "",
     userEmail: "",
   });
 
-  // Fill in username and email when user is loaded
+  // Fetch tip data on mount
   useEffect(() => {
-    if (user) {
-      setFormData((prev) => ({
-        ...prev,
-        userName: user.displayName || "",
-        userEmail: user.email || "",
-      }));
-    }
-  }, [user]);
-
- 
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const formsData = new FormData(form);
-    const plantDetails = Object.fromEntries(formsData.entries());
-
-    // Include user info from formData
-    const fullData = {
-      ...plantDetails,
-      userName: formData.userName,
-      userEmail: formData.userEmail,
-    };
-
-    // console.log(fullData);
-    
-
-    fetch("http://localhost:3000/addnewtip", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(fullData),
-    })
+    fetch(`http://localhost:3000/alltips/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        if (data.insertedId) {
-          console.log("Server response:", data);
-              Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "New tip added!",
-                    showConfirmButton: false,
-                    timer: 1500,
-                  });
-          form.reset(); 
-          navigate('/mytips')
-        }
+        console.log(data);
+        
+        setFormData({
+          title: data.title || "",
+          planttype: data.planttype || "",
+          category: data.category || "",
+          difficultylevel: data.difficultylevel || "",
+          image: data.image || "",
+          availability: data.availability || "",
+          wateringFrequency: data.wateringFrequency || "",
+          healthStatus: data.healthStatus || "",
+          description: data.description || "",
+          userName: data.userName || user?.displayName || "",
+          userEmail: data.userEmail || user?.email || "",
+        });
       })
       .catch((err) => {
-        console.error("Submission error:", err);
+        console.error("Error loading tip data:", err);
       });
+  }, [id, user]);
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+
+    Swal.fire({
+      title: "Do you want to save the changes?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Save",
+      denyButtonText: `Don't save`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:3000/alltips/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.modifiedCount > 0 || data.acknowledged) {
+              Swal.fire("Updated!", "", "success");
+            } else {
+              Swal.fire("No changes were made.", "", "info");
+            }
+          })
+          .catch((err) => {
+            console.error("Submission error:", err);
+          });
+      } else if (result.isDenied) {
+        Swal.fire("Changes are not saved", "", "info");
+      }
+    });
   };
 
   return (
     <div className="min-h-screen my-20 flex items-center justify-center bg-base-50 px-4 py-10 text-base-content">
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleUpdate}
         className="w-full max-w-5xl bg-base-100 shadow-md rounded-lg p-8"
       >
         <h2 className="text-center text-primary text-2xl md:text-3xl font-semibold uppercase border-b pb-2 mb-10">
-          Add New Tip
+          Update Tip
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Title */}
@@ -84,19 +98,21 @@ const AddNewPlantForm = () => {
             <input
               type="text"
               name="title"
-              placeholder="e.g., “How I Grow Tomatoes Indoors”"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
               className="input input-bordered w-full"
               required
             />
           </div>
 
-          {/* Plant type */}
+          {/* Plant Type */}
           <div>
             <label className="block mb-1 font-medium">Plant Type</label>
             <input
               type="text"
               name="planttype"
-              placeholder="Plant Type"
+              value={formData.planttype}
+              onChange={(e) => setFormData({ ...formData, planttype: e.target.value })}
               className="input input-bordered w-full"
               required
             />
@@ -107,6 +123,8 @@ const AddNewPlantForm = () => {
             <label className="block mb-1 font-medium">Category</label>
             <select
               name="category"
+              value={formData.category}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
               className="select select-bordered w-full"
               required
             >
@@ -123,6 +141,10 @@ const AddNewPlantForm = () => {
             <label className="block mb-1 font-medium">Difficulty Level</label>
             <select
               name="difficultylevel"
+              value={formData.difficultylevel}
+              onChange={(e) =>
+                setFormData({ ...formData, difficultylevel: e.target.value })
+              }
               className="select select-bordered w-full"
               required
             >
@@ -139,7 +161,8 @@ const AddNewPlantForm = () => {
             <input
               type="text"
               name="image"
-              placeholder="e.g., 'https://i.ibb.co/RG87qpm4/slider-3.png'"
+              value={formData.image}
+              onChange={(e) => setFormData({ ...formData, image: e.target.value })}
               className="input input-bordered w-full"
               required
             />
@@ -150,6 +173,8 @@ const AddNewPlantForm = () => {
             <label className="block mb-1 font-medium">Availability</label>
             <select
               name="availability"
+              value={formData.availability}
+              onChange={(e) => setFormData({ ...formData, availability: e.target.value })}
               className="select select-bordered w-full"
               required
             >
@@ -165,7 +190,10 @@ const AddNewPlantForm = () => {
             <input
               type="text"
               name="wateringFrequency"
-              placeholder="e.g., every 3 days"
+              value={formData.wateringFrequency}
+              onChange={(e) =>
+                setFormData({ ...formData, wateringFrequency: e.target.value })
+              }
               className="input input-bordered w-full"
               required
             />
@@ -177,7 +205,10 @@ const AddNewPlantForm = () => {
             <input
               type="text"
               name="healthStatus"
-              placeholder="e.g., Healthy, Dry, Wilting"
+              value={formData.healthStatus}
+              onChange={(e) =>
+                setFormData({ ...formData, healthStatus: e.target.value })
+              }
               className="input input-bordered w-full"
               required
             />
@@ -213,7 +244,10 @@ const AddNewPlantForm = () => {
             <textarea
               name="description"
               rows="4"
-              placeholder="Write a short description about the plant..."
+              value={formData.description}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               className="textarea textarea-bordered w-full resize-none"
               required
             ></textarea>
@@ -221,11 +255,11 @@ const AddNewPlantForm = () => {
         </div>
 
         <button type="submit" className="mt-8 w-full btn btn-primary">
-          Submit
+          Update Tip
         </button>
       </form>
     </div>
   );
 };
 
-export default AddNewPlantForm;
+export default UpdateTip;
