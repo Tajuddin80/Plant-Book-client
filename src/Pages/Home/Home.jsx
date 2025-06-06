@@ -2,6 +2,7 @@ import React from "react";
 import Slider from "../../components/Slider/Slider";
 import { useLoaderData } from "react-router";
 import PlantCard from "./PlantCard";
+import Faq from "../../components/Faq/Faq";
 const Home = () => {
   const datas = useLoaderData();
   // console.log(datas);
@@ -17,7 +18,7 @@ const Home = () => {
   // https://i.ibb.co/0V6Y4gmT/Screenshot-From-2025-06-02-12-49-22.png
   // https://i.ibb.co/4Rf56S91/Screenshot-From-2025-06-02-12-49-38.png
   return (
-    <div>
+    <>
       <div>
 
       <Slider></Slider>
@@ -35,7 +36,8 @@ const Home = () => {
       ))}
 
 </div>
-    </div>
+<Faq></Faq>
+    </>
   );
 };
 

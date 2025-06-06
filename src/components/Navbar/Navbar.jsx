@@ -7,7 +7,6 @@ import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
 const Navbar = () => {
   const { user, handleLogout } = useContext(AuthContext);
 
-  // Theme state and persistence
   const [theme, setTheme] = useState("luxury");
 
   useEffect(() => {

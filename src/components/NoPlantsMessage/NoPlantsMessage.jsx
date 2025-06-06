@@ -1,5 +1,5 @@
 import React from "react";
-import leafIcon from "../../assets/extra-section/leaf animation.gif"; 
+import leafIcon from "../../assets/extra-section/leaf animation.gif";
 import { useNavigate } from "react-router";
 
 const NoPlantsMessage = () => {

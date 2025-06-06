@@ -3,16 +3,14 @@ import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
 
-
 const AddNewPlantForm = () => {
   const { user } = useContext(AuthContext);
- const navigate = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     userName: "",
     userEmail: "",
   });
 
-  // Fill in username and email when user is loaded
   useEffect(() => {
     if (user) {
       setFormData((prev) => ({
@@ -22,8 +20,6 @@ const AddNewPlantForm = () => {
       }));
     }
   }, [user]);
-
- 
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,8 +34,7 @@ const AddNewPlantForm = () => {
       userEmail: formData.userEmail,
     };
 
-    // console.log(fullData);
-    
+
 
     fetch("http://localhost:3000/addnewtip", {
       method: "POST",
@@ -52,15 +47,15 @@ const AddNewPlantForm = () => {
       .then((data) => {
         if (data.insertedId) {
           console.log("Server response:", data);
-              Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "New tip added!",
-                    showConfirmButton: false,
-                    timer: 1500,
-                  });
-          form.reset(); 
-          navigate('/mytips')
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "New tip added!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          form.reset();
+          navigate("/mytips");
         }
       })
       .catch((err) => {

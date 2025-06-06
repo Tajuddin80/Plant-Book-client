@@ -10,29 +10,27 @@ function Slider() {
   const swiperRef = useRef(null);
 
   const slides = [
-{
-  title: "Urban Gardening Meetup",
-  description:
-    "Join fellow plant lovers for a hands-on workshop on balcony and container gardening.",
-  image: "https://i.ibb.co/RG87qpm4/slider-3.png",
-  date: "2025-06-15",
-},
-{
-  title: "Composting 101: From Waste to Wealth",
-  description:
-    "Learn the art of composting at home and reduce your carbon footprint while enriching your garden soil.",
-  image: "https://i.ibb.co/zhcZSrVD/slider-2.png",
-  date: "2025-06-22",
-},
-{
-  title: "Hydroponics for Beginners",
-  description:
-    "Discover how to grow fresh herbs and veggies without soil — perfect for small spaces and curious minds.",
-  image: "https://i.ibb.co/hR6fTNwf/slider-1.png",
-  date: "2025-07-01",
-},
-
-
+    {
+      title: "Urban Gardening Meetup",
+      description:
+        "Join fellow plant lovers for a hands-on workshop on balcony and container gardening.",
+      image: "https://i.ibb.co/RG87qpm4/slider-3.png",
+      date: "2025-06-15",
+    },
+    {
+      title: "Composting 101: From Waste to Wealth",
+      description:
+        "Learn the art of composting at home and reduce your carbon footprint while enriching your garden soil.",
+      image: "https://i.ibb.co/zhcZSrVD/slider-2.png",
+      date: "2025-06-22",
+    },
+    {
+      title: "Hydroponics for Beginners",
+      description:
+        "Discover how to grow fresh herbs and veggies without soil — perfect for small spaces and curious minds.",
+      image: "https://i.ibb.co/hR6fTNwf/slider-1.png",
+      date: "2025-07-01",
+    },
   ];
 
   return (
@@ -41,8 +39,7 @@ function Slider() {
         <div className="h-[calc(100vh-60px)] md:h-[520px] md:px-8 lg:px-0">
           <Swiper
             ref={swiperRef}
-            modules={[ Autoplay]}
-           
+            modules={[Autoplay]}
             loop={true}
             autoplay={{ delay: 2500, disableOnInteraction: false }}
             className="mySwiper w-full mx-auto"

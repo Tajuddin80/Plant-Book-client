@@ -24,7 +24,7 @@ const PlantDetailCard = () => {
     userName,
     userEmail,
     totalLiked = 0,
-    likedBy = []
+    likedBy = [],
   } = plant;
 
   const [likes, setLikes] = useState(totalLiked);
@@ -49,7 +49,7 @@ const PlantDetailCard = () => {
       });
 
       if (res.ok) {
-        setLikes(prev => prev + 1);
+        setLikes((prev) => prev + 1);
         setLiked(true);
         Swal.fire({
           position: "center",
@@ -119,7 +119,9 @@ const PlantDetailCard = () => {
           >
             <FaHeart className="inline mr-1" /> {liked ? "Liked" : "Like"}
           </button>
-          <span className="text-base-content/70">{likes} like{likes !== 1 ? "s" : ""}</span>
+          <span className="text-base-content/70">
+            {likes} like{likes !== 1 ? "s" : ""}
+          </span>
         </div>
       </div>
     </div>

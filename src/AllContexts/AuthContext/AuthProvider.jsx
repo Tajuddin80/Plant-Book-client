@@ -45,21 +45,14 @@ const AuthProvider = ({ children }) => {
 
   // Listen to auth state change
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user || null); 
+      setLoading(false); 
+    });
 
-
-useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (user) => {
-    setUser(user || null); // explicitly set null if no user
-    setLoading(false);     // always stop loading
-  });
-
-  return () => unsubscribe();
-}, []);
-
-
-
-
-
+    return () => unsubscribe();
+  }, []);
 
   return (
     <AuthContext
@@ -75,7 +68,8 @@ useEffect(() => {
         username,
         setPhoto,
         photo,
-        email, setEmail
+        email,
+        setEmail,
       }}
     >
       {children}

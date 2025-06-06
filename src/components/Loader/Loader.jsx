@@ -1,6 +1,6 @@
 import React from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import animationDataUrl from '../../assets/extra-section/animation.lottie';
+import animationDataUrl from "../../assets/extra-section/animation.lottie";
 
 const Loader = () => {
   return (
