@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
 import Swal from "sweetalert2";
-import { useParams } from "react-router";
+import {  useNavigate, useParams } from "react-router";
 
 const UpdateTip = () => {
   const { user } = useContext(AuthContext);
   const { id } = useParams();
-
+const navigate = useNavigate()
   const [formData, setFormData] = useState({
     title: "",
     planttype: "",
@@ -69,6 +69,7 @@ const UpdateTip = () => {
           .then((data) => {
             if (data.modifiedCount > 0 || data.acknowledged) {
               Swal.fire("Updated!", "", "success");
+              navigate(`/mytips/${data.userEmail || user?.email}`)
             } else {
               Swal.fire("No changes were made.", "", "info");
             }
