@@ -1,9 +1,15 @@
 import { Typewriter } from "react-simple-typewriter";
 import plantImg from "../../assets/extra-section/leaf animation.gif";
+import { Helmet } from "react-helmet";
 
 export default function AboutUs() {
   return (
+
+  
     <section className="min-h-screen flex flex-col justify-center items-center text-center px-4 py-12 bg-base-100">
+          <Helmet>
+                <title>Plant Book 🌱 About Us</title>
+            </Helmet>
       <div className="text-center items-center">
         <img src={plantImg} alt="" />
       </div>

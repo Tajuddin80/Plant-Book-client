@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLoaderData } from "react-router";
 import Plant from "./Plant";
+import { Helmet } from "react-helmet";
 
 const BrowseTips = () => {
   const allTips = useLoaderData(); // assuming this contains an array of tip objects
@@ -20,6 +21,9 @@ const BrowseTips = () => {
 
   return (
     <div className="overflow-x-auto">
+            <Helmet>
+                <title>Plant Book 🌱 Active Tips</title>
+            </Helmet>
       {/* Filter Dropdown */}
       <div className="w-[95vw] mx-auto mt-10 mb-4 flex justify-end">
         <select

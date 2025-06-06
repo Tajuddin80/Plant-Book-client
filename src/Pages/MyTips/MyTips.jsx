@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import NoPlantsMessage from "../../components/NoPlantsMessage/NoPlantsMessage";
 import MyPlant from "./MyPlant";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet";
 
 const MyTips = () => {
   const { email } = useParams();
@@ -64,6 +65,9 @@ const MyTips = () => {
 
   return myPlants.length ? (
     <div className="overflow-x-auto">
+            <Helmet>
+                <title>Plant Book 🌱 My Tips</title>
+            </Helmet>
       <table className="w-[95vw] my-20 mx-auto bg-base-50 border border-base-300 rounded-lg shadow-sm text-base-content">
         <thead className="bg-primary text-primary-content">
           <tr>

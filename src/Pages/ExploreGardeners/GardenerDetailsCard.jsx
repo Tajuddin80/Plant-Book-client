@@ -2,7 +2,7 @@ import { useLoaderData } from "react-router";
 
 const GardenerDetailsCard = () => {
   const gardeners = useLoaderData();
-  const gardener = gardeners[0]; // ✅ assign gardener first
+  const gardener = gardeners[0]; 
 
   if (!gardener)
     return <p className="text-center mt-10">Loading gardener data...</p>;

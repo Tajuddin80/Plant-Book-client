@@ -33,6 +33,7 @@ https://plant-book-f2ba2.web.app/
 - Swiper for sliders/carousels
 - React Tooltip for tooltips
 - React Typewriter
+- React Helmet
 - Lottie animations with `@lottiefiles/dotlottie-react`
 
 ---

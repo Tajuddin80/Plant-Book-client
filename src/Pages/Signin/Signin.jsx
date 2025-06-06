@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet";
 
 const Signin = () => {
   const {
@@ -109,6 +110,9 @@ const Signin = () => {
 
   return (
     <div className="mx-auto max-w-md p-4 my-20 rounded-md shadow sm:p-8 bg-base-100 text-base-content">
+            <Helmet>
+                <title>Plant Book 🌱 Sign In</title>
+            </Helmet>
       <h2 className="mb-3 text-3xl font-semibold text-center">
         Login to your account
       </h2>

@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router";
 import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
 import Swal from "sweetalert2";
 import { updateProfile } from "firebase/auth";
+import { Helmet } from "react-helmet";
 
 const Signup = () => {
   const [error, setError] = useState("");
@@ -134,6 +135,9 @@ const Signup = () => {
 
   return (
     <div className="mx-auto max-w-md p-4 my-20 rounded-md shadow sm:p-8 bg-base-100 text-base-content">
+            <Helmet>
+                <title>Plant Book 🌱 Register</title>
+            </Helmet>
       <h2 className="mb-3 text-3xl font-semibold text-center">
         Register your account
       </h2>

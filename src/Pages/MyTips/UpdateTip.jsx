@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../AllContexts/AuthContext/AuthContext";
 import Swal from "sweetalert2";
 import {  useNavigate, useParams } from "react-router";
+import { Helmet } from "react-helmet";
 
 const UpdateTip = () => {
   const { user } = useContext(AuthContext);
@@ -85,6 +86,9 @@ const navigate = useNavigate()
 
   return (
     <div className="min-h-screen my-20 flex items-center justify-center bg-base-50 px-4 py-10 text-base-content">
+            <Helmet>
+                <title>Plant Book 🌱 Update Tip</title>
+            </Helmet>
       <form
         onSubmit={handleUpdate}
         className="w-full max-w-5xl bg-base-100 shadow-md rounded-lg p-8"

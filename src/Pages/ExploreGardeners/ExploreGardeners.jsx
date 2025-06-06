@@ -1,12 +1,16 @@
 import React from "react";
 import { useLoaderData } from "react-router";
 import Gardener from "./Gardener";
+import { Helmet } from "react-helmet";
 
 const ExploreGardeners = () => {
   const activeGardeners = useLoaderData();
 
   return (
     <>
+          <Helmet>
+                <title>Plant Book 🌱 Active Gardeners</title>
+            </Helmet>
       <h2 className="text-center text-primary text-2xl md:text-3xl font-semibold uppercase border-b pb-2 my-10">
         Active Gardeners
       </h2>
