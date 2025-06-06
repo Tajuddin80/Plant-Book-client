@@ -37,58 +37,6 @@ const AuthProvider = ({ children }) => {
     return signInWithPopup(auth, googleProvider);
   };
 
-  // Google helper
-
-  // const location = useLocation();
-  // const navigate = useNavigate();
-  // const from = location.state?.from?.pathname || "/";
-  // const handleGoogleClick = async (setSuccess, setError) => {
-  //   try {
-  //     const result = await handleGoogleSignIn();
-  //     const user = result.user;
-  //     // setGoogleUser(user);
-  //     // setSuccess("Google sign-in success");
-
-  //     const userInfo = {
-  //       name: user?.displayName,
-  //       photo: user?.photoURL,
-  //       email: user?.email,
-  //     };
-
-  //     await fetch("http://localhost:3000/adduser", {
-  //       method: "POST",
-  //       headers: {
-  //         "content-type": "application/json",
-  //       },
-  //       body: JSON.stringify(userInfo),
-  //     })
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         if (data.insertedId) {
-  //           Swal.fire({
-  //             position: "center",
-  //             icon: "success",
-  //             title: "Google Sign-in Successful",
-  //             showConfirmButton: false,
-  //             timer: 1500,
-  //           });
-
-  //           navigate(from, { replace: true });
-  //         }
-  //       });
-  //   } catch (error) {
-  //     setError(error.message);
-  //     Swal.fire({
-  //       position: "center",
-  //       icon: "error",
-  //       title: "Sign-in Failed",
-  //       text: error.message,
-  //       showConfirmButton: false,
-  //       timer: 1500,
-  //     });
-  //   }
-  // };
-
   // Sign Out
   const handleLogout = () => {
     setLoading(true);
@@ -96,13 +44,22 @@ const AuthProvider = ({ children }) => {
   };
 
   // Listen to auth state change
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
+
+
+
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
+    setUser(user || null); // explicitly set null if no user
+    setLoading(false);     // always stop loading
+  });
+
+  return () => unsubscribe();
+}, []);
+
+
+
+
+
 
   return (
     <AuthContext

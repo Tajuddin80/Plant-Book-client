@@ -70,7 +70,7 @@ export const router = createBrowserRouter([
         path: "mytips",
         element: (
           <PrivateRoute>
-            <PlantDetailCard />
+             <AddNewPlantForm />
           </PrivateRoute>
         ),
       },

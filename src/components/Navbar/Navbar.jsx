@@ -119,14 +119,14 @@ const Navbar = () => {
             role="button"
             className="btn btn-ghost btn-circle avatar"
             data-tooltip-id="userTooltip"
-            data-tooltip-content={username || email || "User"}
+            data-tooltip-content={user.username || user.email || "User"}
           >
             <div className="w-10 rounded-full">
               <img
                 src={
-                photo
+                user.photoURL
                 }
-                alt={username || "User profile"}
+                alt={user.username || "User profile"}
                 style={{ width: "40px", height: "40px", borderRadius: "50%" }}
               />
             </div>
