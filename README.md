@@ -18,7 +18,7 @@ PlantBook cultivates a friendly, knowledge-sharing community for gardeners of al
 
 ## 📸 Screenshot
 
-<img src="https://plant-book-f2ba2.web.app/static/media/your-screenshot.png" alt="PlantBook Screenshot" />
+<img src="https://github.com/Tajuddin80/Plant-Book-client/blob/main/plant-book-f2ba2.web.app_.png" alt="PlantBook Screenshot" />
 
 *(Replace the image URL above with your actual screenshot URL if you have one)*
 
